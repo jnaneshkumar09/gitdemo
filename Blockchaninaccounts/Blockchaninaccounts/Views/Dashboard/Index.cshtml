@@ -1,0 +1,202 @@
+﻿@model IEnumerable<Blockchaninaccounts.Models.GetRecentTransactionList_Result>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+   <style>
+        .th {
+            height: 650px;
+        }
+        .th1 {
+            height: 500px;
+        }
+    </style>
+<style>
+    .myInput {
+        border-style: none;
+    }
+
+        .myInput:hover {
+            border-style: none;
+        }
+
+        .myInput:focus {
+            border-style: none;
+        }
+</style>
+    <!-- end row -->
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card m-b-30">
+                <div class="card-body th1">
+                    <div class="form-group row">
+                        <label class="col-sm-7 col-form-label">WALLETS</label>
+                        <div class="col-sm-5">
+                         @Html.DropDownList("coinname", new SelectList(ViewBag.coinlist, "coinname", "coinname", "MicroBitcoin"), " - Select--", new
+                            {
+                             @id = "ddlcoinlist",
+                             @class = "form-control"
+                            })
+                          @Html.Hidden("userid", (object)ViewBag.userid)
+                        </div>
+                    </div>
+                    <div>
+                            <b> Total Balance: </b>
+                            @Html.TextBox("TotalBalance", (decimal)ViewBag.Totalbalance, new {@id="totbal", @readonly="true",@class="myInput", style = "width:65px" })
+                            <b> Available Balance: </b>
+                            @Html.TextBox("AvailableBalance", (decimal)ViewBag.availablebalance, new {@id="availbal", @readonly = "true", @class = "myInput", style = "width:65px" })
+                    </div>
+                    <div>
+                        <b> Total Transaction (Coins) :  </b>  @ViewBag.totaltransaction
+                    </div>
+                    <br/>
+                    <img src="@Url.Action("MyChart")" id="staticimg" alt="No Data" />
+                    <img id="imgpic" alt="No Data" style="display:none" />
+               </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+            <div class="card m-b-30">
+                <div class="card-body th1">
+                    <h4 class="mt-0 m-b-15 header-title">Wallet Balance</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Coin Name
+                                   
+                                </th>
+                                <th>
+                                    Total Balance <br />(Amt in coins)
+                                </th>
+                                <th>
+                                    Available Balance <br />(Amt in coins)
+                                </th>
+                            </tr>
+                            @foreach (var item in ViewBag.walletbalance)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.CoinName
+                                    </td>
+                                    <td>
+                                        @item.TotalBalance
+                                    </td>
+                                    <td>
+                                        @item.AvailableBalance
+                                    </td>
+                                </tr>
+                            } 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card m-b-30">
+                <div class="card-body th">
+                    <h4 class="mt-0 m-b-30 header-title">Latest Transactions</h4>
+                    <div class="table-responsive">
+                         <table class="table">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TransactionId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Transaction_Date)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Transaction_Time)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Type)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+
+                            </tr>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => Convert.ToInt32(item.TransactionId))*@
+                                        @Convert.ToInt32(item.TransactionId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Transaction_Date)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Transaction_Time)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+
+                                </tr>
+                            }
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card m-b-30">
+                <div class="card-body th">
+                    <h4 class="mt-0 m-b-15 header-title">Recent Activity Feed</h4>
+                    <ol class="activity-feed mb-0">
+                        @foreach (var item in ViewBag.activity)
+                        {
+                            <li class="feed-item">
+                                <span class="date">@item.DateandTime</span>
+                                <span class="activity-text">@item.Activity</span>
+                            </li>
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<script src="../../Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+ <script type="text/javascript">
+     $('#ddlcoinlist').change(function () {
+         //debugger;
+         //alert('Changed');
+       $('#totbal').val('0');
+       $('#availbal').val('0');
+       $('#imgpic').attr('src', null);
+
+        var ddlvalue1 = $("#ddlcoinlist").val();
+        var userid1 = $("#userid").val();
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/Dashboard/GetBalances',
+            data: { ddlvalue: ddlvalue1, userId: userid1 },
+            success: function (result) {
+                if (result.TotalBalance == "") {
+                    $('#totbal').val('0');
+                    $('#availbal').val('0');
+                }
+                else {
+                    document.getElementById("imgpic").style.display = "block";
+                    $("#staticimg").hide();
+                    $('#totbal').val(result.TotalBalance);
+                    $('#availbal').val(result.AvailableBalance);
+                    $('#imgpic').attr('src', result.ImageChart);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    });
+</script>

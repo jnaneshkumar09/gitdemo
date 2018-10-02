@@ -1,0 +1,385 @@
+﻿@model Blockchaninaccounts.Models.SendBitcoinViewModel
+@{
+    ViewBag.Title = "Send Bitcoin";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function getop() {
+        debugger;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var Value = parseInt(a);
+        var CoinId = parseInt($('#Currency').val());
+        if (CoinName == "Select") {
+            jQuery('#Amount2').val("Please select Coin first..");
+            return false;
+        }
+        $.ajax({
+
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/GetCoinValue',
+            data: { coinid: CoinId, value: a, coinname:CoinName,name:"Send"},
+            success: function (result) {
+                if (result == "NA") {
+                    jQuery('#Amount2').val("NA");
+
+                }
+                else if (result.error == "NOBAL")
+                {
+                    disable(); $("#cname").html(""); // clear before appending new list
+                    $("#cname").append(CoinName);
+                    jQuery('#Amount2').val(parseFloat(result.coinamt).toFixed(2));
+                }
+                else {
+                    Enable();
+                    jQuery('#Amount2').val(parseFloat(result.coinamt).toFixed(2));
+                }
+                
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+    function disable()
+    {
+        debugger;
+        // $('#' + "Send").find(':input').attr('disabled', 'disabled');
+       // $("#dsu").addClass("show");
+        $("#btn,#Description,#FeeType").attr('disabled', true);
+        $("#dsu").addClass("show");
+        $("#dsu").css("display", "block");
+      
+    }
+    function Enable()
+    {
+        $("#btn,#Description,#FeeType").attr('disabled', false);
+        $("#dsu").css("display", "none");
+       // $("#error").html("");
+    }
+    $(function()
+    {
+       
+        setTimeout(function () { $("#successid").fadeOut(1500); }, 5000)
+        //setTimeout(function () { $("#dsu").fadeOut(1500); }, 5000)
+    });
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+
+<script>
+    if(@ViewBag.value==1)
+    {
+        $(document).ready(function () {
+            debugger;
+           // $('#' + "Send").find(':input').attr('disabled', 'disabled');
+            $("#dsu").css("display", "none");
+            $("#dsu").removeClass("show");
+            $("#successid").css("display", "block");
+        });
+    }
+  </script>
+@*<h2>SendBitcoin</h2>*@
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-20">
+
+            
+
+            <div class="card-body">
+                @using (Html.BeginForm("SendBitcoin", "Send", FormMethod.Post, new { role = "form", @id = "Send" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <h3 class="mt-0 header-title"><i class="dripicons-forward"></i> Send Bitcoin</h3>
+
+                @*<div class="alert alert-danger alert-dismissible fade show" style="float: right; margin-top: -48px;" role="alert" id="success">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Well done!</strong>
+                </div>*@
+
+                <hr />
+                @*<div>
+                    @Html.Raw(ViewBag.msg)
+                </div>*@
+                    @*<div class="alert alert-success"  role="alert" style="display:none">
+                        <p>data success</p>
+                        </div>*@
+                        <div class="row s">
+                            <div class="col-sm-12" id="error">
+                                <div class="alert alert-danger bg-danger text-white alert-dismissible fade show" style="display:none" role="alert" id="dsu">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <strong>Sorry!</strong> You don't have enough Coins in your wallet for <strong id="cname"></strong>
+                                </div>
+
+                                
+                                    <div class="alert alert-success bg-success text-white alert-dismissible fade show" style="display:none" role="alert" id="successid">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <strong>Well done!</strong> <strong id="cname"> @ViewBag.msg</strong>
+                                    </div>
+                              
+                              </div>
+                           
+                            @*<div class="col-sm-12" id="success">
+                                <div class="alert alert-success bg-success text-white alert-dismissible fade show" role="alert" style="display:none" id="successid">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <strong>Well done!</strong> <strong id="cname"> @ViewBag.msg</strong>
+                                </div>
+                            </div>*@
+
+                            </div>
+
+                            <div class="row s">
+                                <div class="col-sm-5">
+                                    <label for="example-search-input" class="col-form-label">Currency:</label>
+                                    
+                                   
+                                    @Html.DropDownListFor(M => M.CoinTypeId, new SelectList(ViewBag.Coinlist, "CoinId", "CoinName"), "Select", new { @class = "form-control", id = "Currency" })
+                                    @Html.ValidationMessageFor(model => model.CoinTypeId, "", new { @class = "text-danger" })
+                                    <div id="Massage"></div>
+                                </div>
+                               
+                            </div>
+                        <div class="form-group row s">
+                            <div class="col-sm-12">
+                                <label for="example-search-input" class="col-form-label">To:</label>
+                                @*<input class="form-control" type="text" placeholder="Enter Address Here..." id="example-search-input">*@
+                                @*@Html.EditorFor(model => model.ToBitCoin, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address Here...",id= "To" } })
+                                    @Html.ValidationMessageFor(model => model.ToBitCoin, "", new { @class = "text-danger" })*@
+                                <div class="input-group bootstrap-touchspin">
+                                    @*<input id="demo2" type="text" value="0" name="demo2" class="form-control" style="display: block;">*@
+                                 
+                                    @*<span class="input-group-addon bootstrap-touchspin-postfix"><i class="mdi mdi-qrcode"></i></span><br />*@
+                                    <input id="qr" placeholder="Enter Address Here..." type="text" name="demo2" class="form-control" style="display: block;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row s" style="margin-top: 42px;">
+                            <label for="btc" style="margin-left:20px" class="col-form-label">Amount:</label>
+                            <div class="col-sm-5">
+                                @*<input class="form-control" type="number" placeholder="BTC" id="btc">*@
+                                @Html.EditorFor(model => model.AmtInCoins, new { htmlAttributes = new { @class = "form-control", id = "Amount1", @onkeyup = "return getop();", placeholder = "Enter no. of coin to be send." } })
+                                @Html.ValidationMessageFor(model => model.AmtInCoins, "", new { @class = "text-danger" })
+                            </div>
+                            @*<i class="ti-arrows-horizontal" style="margin-top: 10px;"></i>*@
+                             <i class="dripicons-arrow-thin-right" style="margin-top: 10px;"></i>
+                            <div class="col-sm-5">
+                                <div class="input-group bootstrap-touchspin">
+                                    @*<input class="form-control" value="" style="width: 118%;" type="text" placeholder="INR" id="inr">*@
+                                    <span class="input-group-addon bootstrap-touchspin-postfix">$</span><br />
+                                    @Html.EditorFor(model => model.AmtInUSD, new { htmlAttributes = new { @class = "form-control", id = "Amount2", placeholder = "USD", @readonly = "readonly" } })
+                                   
+                                </div>
+                                @Html.ValidationMessageFor(model => model.AmtInUSD, "", new { @class = "text-danger" })
+                             </div>
+                        </div>
+                        <div class="form-group row s">
+                            <div class="col-sm-12">
+                                <label for="example-search-input" class="col-form-label">Description:</label>
+                                @*<textarea id="textarea" class="form-control" maxlength="225" rows="3" placeholder="Money For Rent"></textarea>*@
+                                @Html.EditorFor(model => model.DesAddress, new { htmlAttributes = new { @class = "form-control", id = "Description", @type = "textarea", maxlength = "225", rows = "3", placeholder = "Write description about sending." } })
+                                @Html.ValidationMessageFor(model => model.DesAddress, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row s">
+                            <div class="col-sm-12">
+                                <label for="example-search-input" class="col-form-label">Transaction Fee:</label>
+                                @*<select class="form-control">
+                                        <option>--Select--</option>
+                                        <option>Regular</option>
+                                        <option>Regular 1</option>
+                                    </select>*@
+                                @Html.DropDownListFor(model => model.FeeType, ViewBag.FeeType as List<SelectListItem>, "Select", new { @class = "form-control", id = "FeeType" })
+                                <div id="Fee">
+                                    @*<span class="font-13 text-muted">At Rs:</span> <label> 544249</label><span class="font-13 text-muted"> per BTC</span>*@
+                                </div>
+                                @Html.ValidationMessageFor(model => model.FeeType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row s">
+                            <div class="col-sm-12">
+                                <div class="button-items" style="float:right">
+                                    <button type="submit" id="btn" class="btn btn-primary btn-lg waves-effect waves-light">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    
+                        if (@ViewBag.msg != null)
+                        {
+                        @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                        @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+                            @*<script src="~/Scripts/bootstrap.min.js"></script>*@
+                        <script type="text/javascript">
+                            debugger;
+                            jQuery(function () {
+                                //jQuery('#su').model({ 'show': true });
+                                //jQuery('#su').show();
+                               document.getElementById('dsu').style.display = 'block';
+                            });
+                            //$(document).ready(function () {
+                            //    $("#btn").click(function () {
+                            //        //Your actions here
+                            //        $('#su').model('show');
+                            //    });
+                            //});
+                        </script>
+                        }
+                        }
+                @*</form>*@
+                    </div>
+           
+            @*<script src="~/Scripts/bootstrap.min.js"></script>*@
+            @*<script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnsu').click(function () {
+                        $.ajax({
+                            url: 'http://localhost:57986/api/Transaction',
+                            method: 'Post',
+                            contentType: "application/json;charset=UTF-8",
+                            dataType: "json",
+                            data: {
+                                Currency: $('#Currency').options[$('#Currency').selectedIndex].text,
+                                From: $('#From').options[$('#From').selectedIndex].text,
+                                amount1: $('#Amount1').val(),
+                                amount2: $('#Amount2').val(),
+                                Des: $('#Description').val(),
+                                Tf: $('#tf').val(),
+                            },
+                            success: function () {
+                                $('#su').model('show');
+                            }
+
+                        });
+
+
+                        
+                    });
+                });
+            </script>*@
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+<script type="text/javascript">
+  
+    //function GetValue()
+    //{
+    //    debugger;
+    //    var e = document.getElementById("FeeType");
+
+    //    var res = e.options[e.selectedIndex].text;
+    //    var CoinId = $('#Currency').val();
+    
+    //    $.ajax({
+    //        url: '/Send/GetFeeTypeValue',
+    //        type: "GET",
+    //        dataType: "JSON",
+    //        data: { coinid: countryId, type1: res },
+    //        success: function (Fee) {
+    //            $("#Fee").html(""); // clear before appending new list
+    //            $("#Fee").append("<span class='font-13 text-muted'>" + "Transaction Fee For" + '</span>' + "<label>'" + res + "'</label>" + "is " + '"' + Fee + '"');
+            
+    //        }
+    //    });
+   // }
+
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $('#Currency').change(function () {
+
+        debugger;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var CoinId = $('#Currency').val();
+        if (CoinName == "Select") {
+            $("#Massage").html("");
+            return false;
+        }
+       
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/CheckCoin',
+            data: { coinid: CoinId },
+            success: function (result) {
+                if (result == "NA") {
+                    $("#Massage").html(""); // clear before appending new list
+                    $("#Massage").append("<label  style='color:red'>" + CoinName + " price is not available");
+                }
+                else { $("#Massage").html(""); }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+        if (a != "") { getop(); return false; }
+    });
+</script>
+
+<script type="text/javascript">
+    $('#FeeType').change(function () {
+        
+        debugger;
+        var e = document.getElementById("FeeType");
+
+        var res = e.options[e.selectedIndex].text;
+        var CoinId = $('#Currency').val();
+        if (res == "Select")
+        {
+            $("#Fee").html("");
+            return false;
+        }
+       
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/Send/GetFeeTypeValue',
+            data: { coinid: CoinId, type1: res },
+            success: function (result) {
+               
+                $("#Fee").html(""); // clear before appending new list
+                $("#Fee").append("<span class='font-13 text-muted'>" + "Transaction Fee For " + '</span>' + "<label>" + res +" is $" + parseFloat(result).toFixed(2)+ "</label>");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    });
+</script>
+@*<script type="text/javascript">
+    debugger;
+
+    function Get(value) {
+     
+        $.ajax({
+            url: '@Url.Action("GetDollarValue","Deposit")',
+            type: "Get",
+            data: { name: $("#amount").val() },
+            dataType: 'json',
+            success: function (result) {
+                var amount = $("#amount").val() * $("#coin").val() / $("#usd").val();
+                $("#numofcoin").val(amount);
+            },
+            error: function () {
+                alert("not connected!");
+            }
+        });
+    }
+</script>*@

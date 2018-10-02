@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BlockChainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Coin_Master">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CoinName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CoinAbbreviation" Type="nvarchar" MaxLength="50" />
+          <Property Name="MinimumSendtAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumSendAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumReceivetAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumReceiveAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumExchagetAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumExchangeAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumSellAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumSellAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="SellFee" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="SellTax" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumBuyAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumBuyAmount" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="BuyFee" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="BuyTax" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="SendTransactionFeeReguler" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="SendTransactionFeeNormal" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="SendTransactionFeeHigh" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="IsSend" Type="bit" />
+          <Property Name="IsReceive" Type="bit" />
+          <Property Name="IsSell" Type="bit" />
+          <Property Name="IsBuy" Type="bit" />
+          <Property Name="IsExchange" Type="bit" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedUserId" Type="uniqueidentifier" />
+          <Property Name="CreatedDateTime" Type="datetime" />
+          <Property Name="UpdatedUserId" Type="uniqueidentifier" />
+          <Property Name="UpdatedDateTime" Type="datetime" />
+          <Property Name="MarkupBuy" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MarkupSell" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="MarkupExchange" Type="decimal" Precision="18" Scale="8" />
+        </EntityType>
+        <EntityType Name="USER_SESSION">
+          <Key>
+            <PropertyRef Name="SessionToken" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="SessionToken" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <Function Name="GetActivityLogList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetCoinsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetRecentTransactionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetTotalBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="nvarchar" Mode="In" />
+          <Parameter Name="coinid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetTotalTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetWalletBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="BlockChainModelStoreContainer">
+          <EntitySet Name="tbl_Coin_Master" EntityType="Self.tbl_Coin_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_SESSION" EntityType="Self.USER_SESSION" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BlockChainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Coin_Master">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CoinName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CoinAbbreviation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MinimumSendtAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumSendAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumReceivetAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumReceiveAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumExchagetAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumExchangeAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumSellAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumSellAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="SellFee" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="SellTax" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MinimumBuyAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MaximumBuyAmount" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="BuyFee" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="BuyTax" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="SendTransactionFeeReguler" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="SendTransactionFeeNormal" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="SendTransactionFeeHigh" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="IsSend" Type="Boolean" />
+          <Property Name="IsReceive" Type="Boolean" />
+          <Property Name="IsSell" Type="Boolean" />
+          <Property Name="IsBuy" Type="Boolean" />
+          <Property Name="IsExchange" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedUserId" Type="Guid" />
+          <Property Name="CreatedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedUserId" Type="Guid" />
+          <Property Name="UpdatedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="MarkupBuy" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MarkupSell" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="MarkupExchange" Type="Decimal" Precision="18" Scale="8" />
+        </EntityType>
+        <EntityContainer Name="BlockChainEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Coin_Master" EntityType="Self.tbl_Coin_Master" />
+          <FunctionImport Name="GetActivityLogList" ReturnType="Collection(BlockChainModel.GetActivityLogList_Result)">
+          <Parameter Name="userid" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetCoinsList" ReturnType="Collection(BlockChainModel.GetCoinsList_Result)" />
+          <FunctionImport Name="GetRecentTransactionList" ReturnType="Collection(BlockChainModel.GetRecentTransactionList_Result)">
+          <Parameter Name="userid" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetTotalBalance" ReturnType="Collection(BlockChainModel.GetTotalBalance_Result)">
+            <Parameter Name="userid" Mode="In" Type="String" />
+            <Parameter Name="coinid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetTotalTransaction" ReturnType="Collection(Decimal)">
+          <Parameter Name="userid" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetWalletBalance" ReturnType="Collection(BlockChainModel.GetWalletBalance_Result)">
+          <Parameter Name="userid" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="USER_SESSION" EntityType="BlockChainModel.USER_SESSION" />
+        </EntityContainer>
+        <ComplexType Name="GetActivityLogList_Result">
+          <Property Type="DateTime" Name="DateandTime" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Activity" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="GetCoinsList_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="coinname" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetRecentTransactionList_Result">
+          <Property Type="Decimal" Name="TransactionId" Nullable="false" Precision="18" Scale="0" />
+          <Property Type="String" Name="Transaction_Date" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Transaction_Time" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="8" />
+          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="GetTotalBalance_Result">
+          <Property Type="String" Name="coinname" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Transtype" Nullable="false" MaxLength="8" />
+          <Property Type="Decimal" Name="balance" Nullable="false" Precision="38" Scale="0" />
+        </ComplexType>
+        <ComplexType Name="GetWalletBalance_Result">
+          <Property Type="String" Name="CoinName" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="TotalBalance" Nullable="true" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="AvailableBalance" Nullable="true" Precision="38" Scale="0" />
+        </ComplexType>
+        <EntityType Name="USER_SESSION">
+          <Key>
+            <PropertyRef Name="SessionToken" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="SessionToken" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BlockChainModelStoreContainer" CdmEntityContainer="BlockChainEntities">
+          <EntitySetMapping Name="tbl_Coin_Master">
+            <EntityTypeMapping TypeName="BlockChainModel.tbl_Coin_Master">
+              <MappingFragment StoreEntitySet="tbl_Coin_Master">
+                <ScalarProperty Name="MarkupExchange" ColumnName="MarkupExchange" />
+                <ScalarProperty Name="MarkupSell" ColumnName="MarkupSell" />
+                <ScalarProperty Name="MarkupBuy" ColumnName="MarkupBuy" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CoinName" ColumnName="CoinName" />
+                <ScalarProperty Name="CoinAbbreviation" ColumnName="CoinAbbreviation" />
+                <ScalarProperty Name="MinimumSendtAmount" ColumnName="MinimumSendtAmount" />
+                <ScalarProperty Name="MaximumSendAmount" ColumnName="MaximumSendAmount" />
+                <ScalarProperty Name="MinimumReceivetAmount" ColumnName="MinimumReceivetAmount" />
+                <ScalarProperty Name="MaximumReceiveAmount" ColumnName="MaximumReceiveAmount" />
+                <ScalarProperty Name="MinimumExchagetAmount" ColumnName="MinimumExchagetAmount" />
+                <ScalarProperty Name="MaximumExchangeAmount" ColumnName="MaximumExchangeAmount" />
+                <ScalarProperty Name="MinimumSellAmount" ColumnName="MinimumSellAmount" />
+                <ScalarProperty Name="MaximumSellAmount" ColumnName="MaximumSellAmount" />
+                <ScalarProperty Name="SellFee" ColumnName="SellFee" />
+                <ScalarProperty Name="SellTax" ColumnName="SellTax" />
+                <ScalarProperty Name="MinimumBuyAmount" ColumnName="MinimumBuyAmount" />
+                <ScalarProperty Name="MaximumBuyAmount" ColumnName="MaximumBuyAmount" />
+                <ScalarProperty Name="BuyFee" ColumnName="BuyFee" />
+                <ScalarProperty Name="BuyTax" ColumnName="BuyTax" />
+                <ScalarProperty Name="SendTransactionFeeReguler" ColumnName="SendTransactionFeeReguler" />
+                <ScalarProperty Name="SendTransactionFeeNormal" ColumnName="SendTransactionFeeNormal" />
+                <ScalarProperty Name="SendTransactionFeeHigh" ColumnName="SendTransactionFeeHigh" />
+                <ScalarProperty Name="IsSend" ColumnName="IsSend" />
+                <ScalarProperty Name="IsReceive" ColumnName="IsReceive" />
+                <ScalarProperty Name="IsSell" ColumnName="IsSell" />
+                <ScalarProperty Name="IsBuy" ColumnName="IsBuy" />
+                <ScalarProperty Name="IsExchange" ColumnName="IsExchange" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+                <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+                <ScalarProperty Name="UpdatedUserId" ColumnName="UpdatedUserId" />
+                <ScalarProperty Name="UpdatedDateTime" ColumnName="UpdatedDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetActivityLogList" FunctionName="BlockChainModel.Store.GetActivityLogList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BlockChainModel.GetActivityLogList_Result">
+                <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCoinsList" FunctionName="BlockChainModel.Store.GetCoinsList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BlockChainModel.GetCoinsList_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="coinname" ColumnName="coinname" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetRecentTransactionList" FunctionName="BlockChainModel.Store.GetRecentTransactionList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BlockChainModel.GetRecentTransactionList_Result">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="Transaction_Date" ColumnName="Transaction_Date" />
+                <ScalarProperty Name="Transaction_Time" ColumnName="Transaction_Time" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTotalBalance" FunctionName="BlockChainModel.Store.GetTotalBalance">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BlockChainModel.GetTotalBalance_Result">
+                <ScalarProperty Name="coinname" ColumnName="coinname" />
+                <ScalarProperty Name="Transtype" ColumnName="Transtype" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTotalTransaction" FunctionName="BlockChainModel.Store.GetTotalTransaction" />
+          <FunctionImportMapping FunctionImportName="GetWalletBalance" FunctionName="BlockChainModel.Store.GetWalletBalance">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BlockChainModel.GetWalletBalance_Result">
+                <ScalarProperty Name="CoinName" ColumnName="CoinName" />
+                <ScalarProperty Name="TotalBalance" ColumnName="TotalBalance" />
+                <ScalarProperty Name="AvailableBalance" ColumnName="AvailableBalance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="USER_SESSION">
+            <EntityTypeMapping TypeName="BlockChainModel.USER_SESSION">
+              <MappingFragment StoreEntitySet="USER_SESSION">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SessionToken" ColumnName="SessionToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

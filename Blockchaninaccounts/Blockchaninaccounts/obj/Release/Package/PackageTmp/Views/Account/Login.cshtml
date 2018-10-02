@@ -1,0 +1,122 @@
+﻿@using Blockchaninaccounts.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/LoginPageLayout.cshtml";
+}
+
+@*<h2>@ViewBag.Title.</h2>*@
+@*<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                    </div>
+                </div>
+                <p>
+                    @Html.ActionLink("Register as a new user", "Register")
+                </p>
+                @* Enable this once you have account confirmation enabled for password reset functionality
+                    <p>
+                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                    </p>*@
+            @*}
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>*@
+
+<div class="wrapper-page">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center m-0">
+                <a href="index.html" class="logo logo-admin"><img src="@Url.Content("~/Content/")assets/images/Noor.png" height="30" alt="logo"></a>
+            </h3>
+            <div class="p-3">
+                <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
+                <p class="text-muted text-center">Sign in to continue to Noor.</p>
+                @*<form class="form-horizontal m-t-30" action="http://themesbrand.com/fonik/blue/index.html">*@
+                <section id="loginForm">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label for="username">Email or Username</label>
+                            @*<input type="text" class="form-control" id="username" placeholder="Enter username">*@
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Email or Username" } })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="userpassword">Password</label>
+                            @*<input type="password" class="form-control" id="userpassword" placeholder="Enter password">*@
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control",type="password", placeholder = "Password" } })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group row m-t-20">
+                            <div class="col-sm-6">
+                                <div class="custom-control custom-checkbox">
+                                    @*<input type="checkbox" class="custom-control-input" id="customControlInline">*@
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input",id="rd"})
+                                    <label class="custom-control-label" for="rd">Remember me</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
+                            </div>
+                        </div>
+                        <div class="form-group m-t-10 mb-0 row">
+                            <div class="col-12 m-t-20">
+                                <a href="@Url.Action("ForgotPassword", "Account",routeValues: null)" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                            </div>
+                        </div>
+                        @*</form>*@
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="m-t-40 text-center">
+        <p>Don't have an account ? <a href="@Url.Action("Register", "Account",routeValues: null)" id = "loginLink" class="font-500 font-14 text-primary font-secondary"> Signup Now </a> </p>
+        @*<p>© 2018 Fonik. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>*@
+        © 2018 NOOR Accounts by DigiXHub.
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

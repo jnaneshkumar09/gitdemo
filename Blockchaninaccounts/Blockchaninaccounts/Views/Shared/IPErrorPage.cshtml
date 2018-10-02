@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "IPErrorPage";
+    Layout = "~/Views/Shared/LoginPageLayout.cshtml";
+}
+
+<div class="wrapper-page">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center m-0">
+                <a href="index.html" class="logo logo-admin"><img src="@Url.Content("~/Content/")assets/images/logo_dark.png" height="30" alt="logo"></a>
+            </h3>
+            <div class="p-3">
+                <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
+                <p class="text-muted text-center">Sign in to continue to Fonik.</p>
+                @*<form class="form-horizontal m-t-30" action="http://themesbrand.com/fonik/blue/index.html">*@
+                <section id="loginForm">
+           
+                        <div class="form-group">
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading font-18">Sorry!</h4>
+                                <p> you do not have login credential to login with this machine..</p>
+                                <p class="mb-0">In security, IP Adress WhiteList is true.</p>
+                            </div>
+                     
+                        </div>
+                    <div class="form-group m-t-10 mb-0 row">
+                        <div class="col-12 m-t-20">
+                            <a href="@Url.Action("Index", "Home",routeValues: null)" class="text-muted"><i class="mdi mdi-lock"></i>Home Page</a>
+                        </div>
+                     </div>
+                       
+                      
+                        @*</form>*@
+                    
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="m-t-40 text-center">
+        <p>Don't have an account ? <a href="@Url.Action("Register", "Account",routeValues: null)" id="loginLink" class="font-500 font-14 text-primary font-secondary"> Signup Now </a> </p>
+        <p>© 2018 Fonik. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+    </div>
+</div>
+

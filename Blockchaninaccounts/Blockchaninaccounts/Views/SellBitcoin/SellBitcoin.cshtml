@@ -1,0 +1,288 @@
+﻿@model Blockchaninaccounts.Models.SellViewModel
+@{
+    ViewBag.Title = "Sell Bitcoin";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+
+<style>
+    input[type="radio"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #2081d6;
+        transition: 0.2s all linear;
+        outline: none;
+        margin-right: 5px;
+        position: relative;
+        top: 4px;
+    }
+
+        input[type="radio"]:checked {
+            border: 6px solid #2081d6;
+        }
+
+    .radiolabel {
+        margin-right: 15px;
+        line-height: 32px;
+    }
+</style>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+   
+
+    //function getop() {
+    //    debugger;
+    //    var a1 = document.getElementById('Amount1');
+    //    var a = a1.value;
+    //    var Value = parseInt(a);
+    //    var CoinId = parseInt($('#Currency').val());
+    //    if (CoinId == "")
+    //    {
+    //        jQuery('#Amount2').val("Please select Coin first..");
+    //        return false;
+    //    }
+    //    $.ajax({
+
+    //        type: 'GET',
+    //        dataType: 'json',
+    //        url: '/CoinsMarketValue/GetCoinValue',
+    //        data: { coinid: CoinId, value: a,name:"Buy" },
+    //        success: function (result) {
+    //        jQuery('#Amount2').val(parseFloat(result).toFixed(2));
+    //        },
+    //        error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //        }
+    //    });
+    //}
+    function getop() {
+        debugger;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var Value = parseInt(a);
+        var CoinId = parseInt($('#Currency').val());
+        if (CoinId == "") {
+            jQuery('#Amount2').val("Please select Coin first..");
+            return false;
+        }
+        $.ajax({
+
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/GetCoinValue',
+            data: { coinid: CoinId, value: a, name: "Sell", coinname: CoinName },
+            success: function (result) {
+                if (result == "NA") {
+                    jQuery('#Amount2').val("NA");
+
+                }
+                else if (result.error == "NOBAL") {
+                    disable(); $("#cname").html(""); // clear before appending new list
+                    free();
+                    $("#cname").append(CoinName);
+                    //jQuery('#Amount2').val(parseFloat(result.coinamt).toFixed(2));
+                   // jQuery('#fee').val(parseFloat(result.Fee).toFixed(2));
+                   // jQuery('#tax').val(parseFloat(result.Tax1).toFixed(2));
+                   // jQuery('#total').val(parseFloat(result.Total).toFixed(2));
+                   // $("#Coinprice").html(""); // clear before appending new list
+                    //$("#Coinprice").append("<span class='font-13 text-muted'>" + "At $ " + '</span>' + "<label>" + parseFloat(result.markupvalue).toFixed(2) + "</label>" + "<span class='font-13 text-muted'> per " + CoinName + "</span>");
+                }
+                else {
+                    Enable();
+                    //<span class="font-13 text-muted">At Rs:</span> <label> 544249</label><span class="font-13 text-muted"> per BTC</span>
+                    jQuery('#Amount2').val(parseFloat(result.coinamt).toFixed(2));
+                    jQuery('#fee').val(parseFloat(result.Fee).toFixed(2));
+                    jQuery('#tax').val(parseFloat(result.Tax1).toFixed(2));
+                    jQuery('#total').val(parseFloat(result.Total).toFixed(2));
+                    $("#Coinprice").html(""); // clear before appending new list
+                    $("#Coinprice").append("<span class='font-13 text-muted'>" + "At $ " + '</span>' + "<label>" + parseFloat(result.markupvalue).toFixed(2) + "</label>" + "<span class='font-13 text-muted'> per " + CoinName + "</span>");
+                    $("#taxper").html("");
+                    $("#taxper").append("<span class='font-13 text-muted'>" + "Tax is  " + '</span>' + "<label>" + parseFloat(result.CoinTax).toFixed(2) + "%" + "</label>" + "<span class='font-13 text-muted'> per " + CoinName + "</span>");
+                    $("#feeper").html("");
+                    $("#feeper").append("<span class='font-13 text-muted'>" + "Fee is $" + '</span>' + "<label>" + parseFloat(result.CoinFee).toFixed(2) + "</label>" + "<span class='font-13 text-muted'> per " + CoinName + "</span>");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+    function disable() {
+        debugger;
+        // $('#' + "Send").find(':input').attr('disabled', 'disabled');
+        $("#btn").attr('disabled', true);
+        //document.getElementById('dsu').style.display = 'block';
+        $("#dsu").css("display", "block");
+
+    }
+    function Enable() {
+        $("#btn").attr('disabled', false);
+        $("#dsu").css("display", "none");
+       
+    }
+    function free() {
+        jQuery('#Amount2').val("");
+        jQuery('#fee').val("");
+        jQuery('#tax').val("");
+        jQuery('#total').val("");
+        $("#Coinprice").html("");
+        $("#taxper").html("");
+        $("#feeper").html("");
+    }
+    
+</script>
+
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">*@
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-20">
+            <div class="card-body">
+                @*<div class="page-title-box">*@
+                <h2 class="mt-0 header-title"><i class="dripicons-basket"></i> Sell</h2>
+
+                <hr />
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    
+
+
+                    <div class="row" style="margin-left:150px;margin-right:142px;">
+                        <div class="col-sm-12">
+                            <div class="alert alert-success bg-success text-white alert-dismissible fade show" role="alert" style="display:none" id="dsu">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <strong>Sorry!</strong> You don't have enough Coins in your wallet for <strong id="cname"></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="row" style="margin-left: 150px">
+                  
+
+                    <div class="col-md-5">
+                        <div class="p-20">
+                            @*<form action="#">*@
+                                <div class="form-group">
+                                    <label for="example-search-input" class="col-form-label">Currency:</label>
+                                    @*<select class="form-control">
+                                        <option>-Select-</option>
+                                        <option>Bitcoin</option>
+                                        <option>Ethereum</option>
+                                        <option>Ripple</option>
+                                        <option>Micro Bitcoin</option>
+                                    </select>*@
+                                    @Html.DropDownListFor(M => M.CoinTypeId, new SelectList(ViewBag.Coinlist, "CoinId", "CoinName"), "Select", new { @class = "form-control", id = "Currency" })
+                                    @Html.ValidationMessageFor(model => model.CoinTypeId, "", new { @class = "text-danger" })
+                                    <div id="Massage"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>BTC:</label>
+                                    @*<input type="text" id="btc" placeholder="0.00" class="form-control">*@
+                                    @Html.EditorFor(model => model.AmtInCoins, new { htmlAttributes = new { @class = "form-control", @onkeyup = "return getop();", id = "Amount1", placeholder = "BTC" } })
+                                    @Html.ValidationMessageFor(model => model.AmtInCoins, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <span class="font-13 text-muted">or</span> <label>USD:</label>
+                                    @*<input type="text" placeholder="0.00" class="form-control">*@
+                                    @Html.EditorFor(model => model.AmtInUSD, new { htmlAttributes = new { @class = "form-control", id = "Amount2", placeholder = "USD", @readonly="readonly" } })
+                                    @Html.ValidationMessageFor(model => model.AmtInUSD, "", new { @class = "text-danger" })
+                                    <div id="Coinprice"></div>
+                                    @*<span class="font-13 text-muted">At Rs:</span> <label> 544249</label><span class="font-13 text-muted"> per BTC</span>*@
+                                </div>
+                                @*<div class="form-group m-b-0">
+                                    <label>Payment Destination:</label><br />
+                                    <input type="radio" id="rd1"
+                                           name="radio1" value="email" group="rd">
+                                    <label for="rd1" class="radiolabel">Bank Account</label>
+
+                                    <input type="radio" id="contactChoice2"
+                                           name="radio1" value="phone" group="rd">
+                                    <label for="contactChoice2">INR Balance</label>
+                                    
+                                </div>*@
+                            @*</form>*@
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="margin-top: 6px;margin-left: 121px;">
+                        <div class="p-20">
+                            @*<form action="#">*@
+                                <div class="form-group">
+                                    <label>Fee($):</label>
+                                    @*<input type="text" placeholder="0.00" readonly class="form-control">*@
+                                    @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "fee", placeholder = "0.00" } })
+                                    @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+                                    <div id="feeper"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tax($):</label>
+                                    @*<input type="text" placeholder="0.00" readonly class="form-control">*@
+                                    @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "tax", placeholder = "0%" } })
+                                    @Html.ValidationMessageFor(model => model.Tax, "", new { @class = "text-danger" })
+                                    <div id="taxper"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Total($):</label>
+                                    @*<input type="text" placeholder="0.00" class="form-control">*@
+                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "total", placeholder = "0.00" } })
+                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="button-items">
+                                        <button type="submit" id="btn" class="btn btn-primary btn-lg waves-effect waves-light">Continue</button>
+                                    </div>
+                                    @*<span class="font-13 text-muted">(you will confirm in next step)</span>*@
+                                </div>
+                            @*</form>*@
+                        </div>
+                    </div> <!-- end col -->
+
+                </div> <!-- end row -->
+                    }
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $('#Currency').change(function () {
+
+        debugger;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var CoinId = $('#Currency').val();
+        if (CoinName == "Select") {
+            $("#Massage").html("");
+            return false;
+        }
+        if (a != "") { getop(); return false;s}
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/CheckCoin',
+            data: { coinid: CoinId },
+            success: function (result) {
+                if (result == "NA") {
+                    $("#Massage").html(""); // clear before appending new list
+                    $("#Massage").append("<label  style='color:red'>" + CoinName + " price is not available");
+                }
+                else { $("#Massage").html(""); }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    });
+</script>

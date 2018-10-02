@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+    Layout = "~/Views/Shared/_MainLayoutPage.cshtml";
+}
+
+@*<h2>@ViewBag.Title.</h2>
+<div>
+    <p>
+        Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>*@
+
+
+<div class="wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card m-b-20">
+                    <div class="card-body">
+                        <h4 class="mt-0 header-title">Notification</h4>
+                        @*<p class="text-muted m-b-30 font-14">Please check your email to reset your password.</p>*@
+
+                        <div class="alert alert-success" role="alert">
+                            <h4 class="mt-0 header-title">Notification</h4>
+                            <strong>Well done!</strong>  Thank you for confirming your email. Please <a href="@Url.Action("Login", "Account",routeValues: null)" id = "loginLink" class="alert-link">Click here to Log in</a>.
+                        </div>
+
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+    </div> <!-- end container -->
+</div>

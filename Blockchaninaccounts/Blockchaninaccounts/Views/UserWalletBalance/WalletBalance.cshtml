@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "WalletBalance";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+
+
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card m-b-30">
+            <div class="card-body">
+                <h3 class="card-title font-20 mt-0">Wallets</h3>
+                <hr />
+                <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="datatable" class="table table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                                <thead>
+                                    <tr>
+                                        @*<th>Sr.No.</th>*@
+                                        <th>Coin Name</th>
+                                        <th>Total Balance<br />(Amt in coins)</th>
+                                        <th>Available Balance<br />(Amt in coins)</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in ViewBag.walletbalance)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.CoinName
+                                            </td>
+                                            <td>
+                                                @item.TotalBalance
+                                            </td>
+                                            <td>
+                                                @item.AvailableBalance
+                                            </td>
+                                        </tr>
+                                    }
+                                   
+                                    @*<tr role="row" class="even">
+                                        <td class="sorting_1">6</td>
+                                        <td>ETH</td>
+                                        <td>Etherium</td>
+                                        <td>$1,200,000</td>
+                                    </tr>*@
+                                </tbody>
+                            </table>
+                            @*<script type="text/javascript">
+                                $(document).ready(function ($)
+                                   {
+                                    $('#datatable').DataTable({
+                                 "pagingType": "full_numbers"
+                                        });
+                                         });
+
+                                </script>*@
+                            <script type="text/javascript">
+                            $(document).ready(function ($)
+                               {
+                                $('#datatable').DataTable();
+                                     });
+
+                            </script>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

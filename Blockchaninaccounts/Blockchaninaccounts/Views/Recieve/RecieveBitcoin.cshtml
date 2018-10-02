@@ -1,0 +1,234 @@
+﻿@model Blockchaninaccounts.Models.RecieveBitcoinViewModel
+
+@{
+    ViewBag.Title = "Recieve Bitcoin";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function getop() {
+        debugger;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var Value = parseInt(a);
+        var CoinId = parseInt($('#Currency').val());
+        if (CoinName == "Select") {
+            jQuery('#Amount2').val("Please select Coin first..");
+            return false;
+        }
+        $.ajax({
+
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/GetCoinValue',
+            data: { coinid: CoinId, value: a},
+            success: function (result) {
+                if (result == "NA") {
+                    jQuery('#Amount2').val("NA");
+
+                }
+                else {
+
+                    jQuery('#Amount2').val(parseFloat(result.coinamt).toFixed(2));
+                    }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+</script>
+
+<script>
+    function myFunction() {
+        debugger;
+  var copyText = document.getElementById("Qr");
+  copyText.select();
+  document.execCommand("copy");
+  alert("Copied the text: " + copyText.value);
+}
+</script>
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-20">
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <h3 class="mt-0 header-title"><i class="dripicons-return"></i> Recieve Bitcoin</h3>
+                <hr />
+                <input type="hidden" id="CoinName" name="CoinName" />
+                <div class="form-group row s">
+                    <div class="col-sm-12" id="error">
+                        <div class="alert alert-danger bg-danger text-white alert-dismissible fade show" style="display:none" role="alert" id="dsu">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <strong>Sorry!</strong> The <strong id="cname"></strong> Address not present in database. <strong>Plz select different coin.</strong>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <label for="example-search-input" class="col-form-label">Currency:</label>
+                       
+                        @Html.DropDownListFor(M => M.CoinTypeId, new SelectList(ViewBag.Coinlist, "CoinId", "CoinName"), "Select", new { @class = "form-control", id = "Currency" })
+                        @Html.ValidationMessageFor(model => model.CoinTypeId, "", new { @class = "text-danger" })
+                        <div id="Massage"></div>
+                    </div>
+                </div>
+                <div class="form-group row s">
+                    <div class="col-sm-12">
+                        <label for="example-search-input" class="col-form-label">Copy & Share Address</label>
+                        <div class="input-group bootstrap-touchspin">
+                            <input id="Qr" type="text" value="Coin Address" readonly name="Address" class="form-control">
+                            @*@Html.EditorFor(model => model.QRCode, new { htmlAttributes = new { @class = "form-control", id = "Qr", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.QRCode, "", new { @class = "text-danger" })*@
+                            <span class="input-group-btn"><button type="button" onclick="return jQuery('#modal-1').modal('show')" class="btn btn-secondary waves-effect waves-light m-r-6"><i class="mdi mdi-qrcode"></i></button></span>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary bootstrap-touchspin-up" onclick="myFunction()" type="button">Copy</button>@*onclick="return jQuery('#modal-2').modal('show')"*@
+                            </span>
+                        </div>
+                    </div>
+                    </div>
+                @*<div class="form-group row s" style="margin-left:372px;">
+                    <div class="col-sm-4">
+                        <hr />
+                    </div>
+                    OR
+                 <div class="col-sm-4">
+                       <hr />
+                </div>
+                 </div>*@
+
+                   <div class="form-group row s" style="padding-top: 30px;">
+                       <label for="example-search-input" style="margin-left:20px" class="col-form-label">Amount:</label>
+                        <div class="col-sm-5">
+                             @*<input class="form-control" type="search" placeholder="BTC" id="example-search-input">*@
+                            @Html.EditorFor(model => model.AmtInCoins, new { htmlAttributes = new { @class = "form-control", @onkeyup = "return getop();", id = "Amount1", placeholder = "Enter no. of coin to be receive." } })
+                            @Html.ValidationMessageFor(model => model.AmtInCoins, "", new { @class = "text-danger" })
+                         </div>
+                         <i class="ti-arrows-horizontal" style="margin-top: 10px;"></i>
+                         <div class="col-sm-5">
+                             <div class="input-group bootstrap-touchspin">
+                                 <span class="input-group-addon bootstrap-touchspin-postfix">$</span><br />
+                                 @Html.EditorFor(model => model.AmtInUSD, new { htmlAttributes = new { @class = "form-control", id = "Amount2", placeholder = "USD", @readonly = "readonly" } })
+                             </div>
+                             @Html.ValidationMessageFor(model => model.AmtInUSD, "", new { @class = "text-danger" })
+                        </div>
+                   </div>
+                        <div class="form-group row s">
+                            <div class="col-sm-12">
+                                <label for="example-search-input" class="col-form-label">Email:</label>
+                                @*<input class="form-control" type="search" placeholder="Enter requisting email address" id="example-search-input">*@
+                                @Html.EditorFor(model => model.RecievedToEmail, new { htmlAttributes = new { @class = "form-control", id = "Email", placeholder = "Enter Address Here..." } })
+                                @Html.ValidationMessageFor(model => model.RecievedToEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row s">
+                            <div class="col-sm-12">
+                                <label for="example-search-input" class="col-form-label">Description:</label>
+                                @*<textarea id="textarea" class="form-control" maxlength="225" rows="3" placeholder="What is this Transaction?"></textarea>*@
+                                @Html.EditorFor(model => model.TrasactionDes, new { htmlAttributes = new { @class = "form-control", id = "Description", type = "textarea", maxlength = "225", rows = "3", placeholder = "What is this Transaction?" } })
+                                @Html.ValidationMessageFor(model => model.TrasactionDes, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row s">
+                            <div class="col-sm-5">
+                                <div class="button-items">
+                                    <button id="btn" type="submit" class="btn btn-primary btn-lg waves-effect waves-light">Continue</button>
+                                </div>
+                            </div>
+                        </div>
+                }
+                    </div><!--form-->
+                </div>
+            </div> <!-- end col -->
+
+
+    <div class="modal fade" id="modal-1" style="margin-top: 110px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   @* <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                    <h4 class="modal-title">QR Code</h4>
+                </div>
+                <div class="modal-body">
+                    <center>   <img @*src="@ViewBag.qrcode"*@ alt="QR Code not present." style="height:150px;width:150px;" id="Qrcode" /></center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> <!-- end row -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $('#Currency').change(function () {
+
+        debugger;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var CoinName1 = $("#Currency option:selected").text();
+        $("#CoinName").val(CoinName1);
+        var CoinId = $('#Currency').val();
+        if (CoinName == "Select") {
+            $("#Massage").html("");
+            return false;
+        }
+        if (a != "") { getop(); return false;}
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/CheckCoin',
+            data: { coinid: CoinId,coinname:CoinName },
+            success: function (result) {
+                if (result == "NA") {
+                    $("#Massage").html(""); // clear before appending new list
+                    $("#Massage").append("<label  style='color:red'>" + CoinName + " price is not available");
+                }
+                else{
+                    $("#Massage").html("");
+                    $("#Qr").html("");
+                    if (result == "Null")
+                    {
+                        disable(); $("#cname").html(""); // clear before appending new list
+                        $("#cname").append(CoinName);
+                        $("#Qr").val("Coin Address is not present in Database")
+                        $("#Qrcode").html("");
+                        $("#Qrcode").removeAttr("src");
+                    }
+                    else {
+                        Enable(); $("#Qr").val(result.coinvalue);
+                        $("#Qrcode").html("");
+                        $("#Qrcode").attr("src", result.Qr);
+                        }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+        if (a != "") { getop(); return false; }
+    });
+
+    function disable() {
+        debugger;
+        // $('#' + "Send").find(':input').attr('disabled', 'disabled');
+        // $("#dsu").addClass("show");
+        $("#btn,#Description,#Email,#Amount1").attr('disabled', true);
+       // $("#dsu").addClass("show");
+        $("#dsu").css("display", "block");
+
+    }
+    function Enable() {
+        $("#btn,#Description,#Email,#Amount1").attr('disabled', false);
+        $("#dsu").css("display", "none");
+        // $("#error").html("");
+    }
+</script>

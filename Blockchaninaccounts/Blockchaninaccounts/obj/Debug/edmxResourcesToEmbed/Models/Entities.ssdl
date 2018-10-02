@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BlockChainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_Coin_Master">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CoinName" Type="nvarchar" MaxLength="100" />
+    <Property Name="CoinAbbreviation" Type="nvarchar" MaxLength="50" />
+    <Property Name="MinimumSendtAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumSendAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumReceivetAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumReceiveAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumExchagetAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumExchangeAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumSellAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumSellAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="SellFee" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="SellTax" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumBuyAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumBuyAmount" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="BuyFee" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="BuyTax" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="SendTransactionFeeReguler" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="SendTransactionFeeNormal" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="SendTransactionFeeHigh" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="IsSend" Type="bit" />
+    <Property Name="IsReceive" Type="bit" />
+    <Property Name="IsSell" Type="bit" />
+    <Property Name="IsBuy" Type="bit" />
+    <Property Name="IsExchange" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="CreatedUserId" Type="uniqueidentifier" />
+    <Property Name="CreatedDateTime" Type="datetime" />
+    <Property Name="UpdatedUserId" Type="uniqueidentifier" />
+    <Property Name="UpdatedDateTime" Type="datetime" />
+    <Property Name="MarkupBuy" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MarkupSell" Type="decimal" Precision="18" Scale="8" />
+    <Property Name="MarkupExchange" Type="decimal" Precision="18" Scale="8" />
+  </EntityType>
+  <EntityType Name="USER_SESSION">
+    <Key>
+      <PropertyRef Name="SessionToken" />
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="SessionToken" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ExpiryDate" Type="datetime" />
+    <Property Name="CreatedOn" Type="datetime" />
+  </EntityType>
+  <Function Name="GetActivityLogList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userid" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="GetCoinsList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GetRecentTransactionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userid" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="GetTotalBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userid" Type="nvarchar" Mode="In" />
+    <Parameter Name="coinid" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetTotalTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userid" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="GetWalletBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userid" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="BlockChainModelStoreContainer">
+    <EntitySet Name="tbl_Coin_Master" EntityType="Self.tbl_Coin_Master" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USER_SESSION" EntityType="Self.USER_SESSION" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

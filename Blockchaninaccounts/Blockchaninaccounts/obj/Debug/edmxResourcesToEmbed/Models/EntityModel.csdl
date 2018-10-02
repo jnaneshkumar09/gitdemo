@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WalletDigixhubModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="USER_SESSION">
+    <Key>
+      <PropertyRef Name="SessionToken" />
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="SessionToken" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityContainer Name="WalletDigixhubEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="USER_SESSION" EntityType="Self.USER_SESSION" />
+  </EntityContainer>
+</Schema>

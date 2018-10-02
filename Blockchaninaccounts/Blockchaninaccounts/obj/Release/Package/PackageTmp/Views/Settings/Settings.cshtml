@@ -1,0 +1,806 @@
+﻿@model Blockchaninaccounts.Models.SettingViewMode
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+<style>
+    input[type="radio"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #2081d6;
+        transition: 0.2s all linear;
+        outline: none;
+        margin-right: 5px;
+        position: relative;
+        top: 4px;
+    }
+
+        input[type="radio"]:checked {
+            border: 6px solid #2081d6;
+        }
+
+    .radiolabel {
+        margin-right: 15px;
+        line-height: 32px;
+    }
+
+    .sp {
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 20px;
+    }
+</style>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script>
+    $(function () {
+        debugger;
+       setTimeout(function () { $("#success").fadeOut(1500); }, 5000)
+       setTimeout(function () { $("#successEmail").fadeOut(1500); }, 5000)
+    });
+</script>
+<script>
+    if(@ViewBag.ProfileData==0)
+    {
+        $(document).ready(function () {
+            debugger;
+            $('#btne').hide();
+            $('#btnu').show();
+            //$("#").attr("readonly", false);
+            $('#dob,#state,#city,#zipcode,#country').removeAttr("style");
+            $('#DOB,#State,#City,#Country').hide();
+            $('#Fname,#Mname,#Lname,#Nationality,#Ad1,#Ad2,#door,#zipcode').attr("readonly", false);
+            return false;
+        });
+    }
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-20">
+            <div class="card-body">
+                <h3 class="mt-0 header-title"><i class="dripicons-return"></i>Settings</h3>
+
+                <div class="card-body" id="Tabs" style="border-radius: 5px;background-color: #eee;">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-pills nav-justified" role="tablist">
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link active show" data-toggle="tab" href="#home-1" role="tab" aria-selected="true">Profile</a>
+                        </li>
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-selected="false">Email Notification</a>
+                        </li>
+                        @*<li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-toggle="tab" href="#messages-1" role="tab">General Settings</a>
+                        </li>*@
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-toggle="tab" href="#messages-2" role="tab">General Settings</a>
+                        </li>
+                        @*<li class="nav-item waves-effect waves-light">
+                                <a class="nav-link" data-toggle="tab" href="#settings-1" role="tab">Settings</a>
+                            </li>*@
+
+                    </ul>
+                    <hr />
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+  
+                        <div class="tab-pane p-3 active show" id="home-1" role="tabpanel">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Profile</h3>
+                                        @if (TempData["success"] != null)
+                                        {
+                                            <div class="alert alert-success alert-dismissible fade show col-lg-6" style="margin-top: -42px;margin-left: 465px;" role="alert" id="success">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <strong>Well done!</strong>@TempData["success"]
+                                            </div>
+                                        } 
+
+                                        <hr />
+                                        <div class="row">
+                              
+                                            <div class="col-md-12">
+                                    @using (Html.BeginForm("Profile", "Settings", FormMethod.Post, new {value="", role = "form", @id = "profile", @style = "width:100%;" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <div class="error">
+                                            @if (Request.Form.AllKeys.Contains("pr"))
+                                            {
+                                                @Html.ValidationSummary();
+                                               
+                                            }
+                                        </div>
+
+                                                @*<form action="#">*@
+                                                <div class="p-20 sp">
+                                                   
+                                                        <h4 class="mt-0 header-title">Personal Details:</h4>
+                                                        <div style="margin-right:60px;margin-left:60px">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-4">
+                                                                    <label>First Name</label>
+                                                                    @*<input type="text" placeholder="First Name" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Fname, new { htmlAttributes = new { @class = "form-control", id = "Fname", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Fname, "", new { @class = "text-danger" })
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Middle Name </label>
+                                                                    @*<input type="text" placeholder="Middle Name" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Mname, new { htmlAttributes = new { @class = "form-control", id = "Mname", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Mname, "", new { @class = "text-danger" })
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Last Name</label>
+                                                                    @*<input type="text" placeholder="Last Name" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Lname, new { htmlAttributes = new { @class = "form-control", id = "Lname", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Lname, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Date Of Birth</label>
+                                                                   
+                                                                    <div class="input-group">
+                                                                        @Html.EditorFor(model => model.profile.DOB, new { htmlAttributes = new { @class = "form-control", id = "DOB", @readonly = "readonly" } })
+                                                                        @Html.EditorFor(model => model.profile.DOB, new { htmlAttributes = new { @class = "form-control", id = "dob", type = "date", style = "display: none;" } })
+                                                                        <div class="input-group-append">
+                                                                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                                                        </div>
+                                                                       
+                                                                    </div>
+                                                                    @Html.ValidationMessageFor(model => model.profile.DOB, "", new { @class = "text-danger" })
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label>Nationality</label>
+                                                                    @*<input type="text" placeholder="Nationality" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Nationality, new { htmlAttributes = new { @class = "form-control", id = "Nationality", placeholder = "Nationality", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Nationality, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <h4 class="mt-0 header-title">Address Details:</h4>
+                                                        <div style="margin-right:60px;margin-left:60px">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-8">
+                                                                    <label>Address Line 1</label>
+                                                                    @*<input type="text" placeholder="Enter your street address" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Address1, new { htmlAttributes = new { @class = "form-control", id = "Ad1", placeholder = "Enter your street address", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Address1, "", new { @class = "text-danger" })
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label>Door No. </label>
+                                                                    @*<input type="text" placeholder="Number Only" class="form-control">*@
+                                                                    @*<input class="form-control" type="number" value="42" id="example-number-input">*@
+                                                                    @Html.EditorFor(model => model.profile.DoorNo, new { htmlAttributes = new { @class = "form-control", id = "door", type = "number", placeholder = "Enter door no.", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.DoorNo, "", new { @class = "text-danger" })
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="form-group col-md-12">
+                                                                    <label>Address Line 2</label>
+                                                                    @*<input type="text" placeholder="(Optional)Secondary Address" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Address2, new { htmlAttributes = new { @class = "form-control", id = "Ad2", placeholder = "(Optional)Secondary Address", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Address2, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="form-group col-md-3">
+                                                                    <label>Country</label>
+                                                                    @Html.EditorFor(model => model.profile.Country, new { htmlAttributes = new { @class = "form-control", id = "Country", @readonly = "readonly" } })
+                                                                    @Html.DropDownListFor(m => m.profile.Country, new SelectList(ViewBag.Country, "CountryId", "CountryName"),
+                                                                                             "Select Country",
+                                                                                             new { @class = "form-control", id = "country", @onchange = "GetState()", style = "display: none;" })
+                                                                    @Html.ValidationMessageFor(m => m.profile.Country, "", new { @class = "text-danger" })
+                                                                </div>
+                                                                <div class="form-group col-md-3">
+                                                                    <label>State</label>
+                                                                    @Html.EditorFor(model => model.profile.State, new { htmlAttributes = new { @class = "form-control", id = "State", @readonly = "readonly" } })
+                                                                    @Html.DropDownListFor(m => m.profile.State, new SelectList(Enumerable.Empty<SelectListItem>(), "StateId", "StateName"),
+                                                                             "Select state",
+                                                                             new { @class = "form-control", @onchange = "GetCity()", id = "state", style = "display: none;" })
+                                                                    @Html.ValidationMessageFor(m => m.profile.State, "", new { @class = "text-danger" })
+
+                                                                </div>
+                                                                <div class="form-group col-md-3">
+                                                                    <label>City</label>
+                                                                   @Html.EditorFor(model => model.profile.City, new { htmlAttributes = new { @class = "form-control", id = "City", @readonly = "readonly" } })
+                                                                    @Html.DropDownListFor(m => m.profile.City, new SelectList(Enumerable.Empty<SelectListItem>(), "CityId", "CityName"),
+                                                                                     "Select city",
+                                                                                     new { @class = "form-control", id = "city", style = "display: none;" })
+                                                                    @Html.ValidationMessageFor(m => m.profile.City, "", new { @class = "text-danger" })
+                                                                </div>
+
+                                                                <div class="form-group col-md-3">
+                                                                    <label>Zip Code</label>
+                                                                    @*<input type="text" placeholder="Zip Code" class="form-control">*@
+                                                                    @Html.EditorFor(model => model.profile.Zipcode, new { htmlAttributes = new { @class = "form-control", id = "zipcode", placeholder = "Zip Code", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(model => model.profile.Zipcode, "", new { @class = "text-danger" })
+
+                                                                </div>
+                                                                </div>
+                                                              
+                                                            </div>
+                                                   </div>
+                                                <div class="col-sm-12 text-center">
+                                                    @*<button class="btn btn-primary w-md waves-effect waves-light" name="pr" type="submit">Update</button>*@
+                                                    <button class="btn btn-primary  waves-effect waves-light" onclick="return fn()" id="btne" type="submit">Edit</button>
+                                                    <button class="btn btn-primary  waves-effect waves-light" id="btnu" style="display:none" type="submit">Update</button>
+                                                    <button class="btn btn-secondary  waves-effect waves-light" style="display:none" onclick="return fn1()" id="btnc" type="submit">Cancel</button>
+                                                </div>
+                                                    @*</form>*@
+                                 }
+                                  </div>
+
+                                            <script type="text/javascript">
+                               function fn()
+                                {
+                                    debugger;
+                                    //document.getElementById('role').style.display = "none";
+                                    //document.getElementById('roleid').style.display = "block";
+                                    //document.getElementById('sp').style.display = "none";
+                                    //document.getElementById('txt').style.display = "block";
+                                    $('#btne').hide();
+                                    $('#btnu,#btnc').show();
+                                    //$("#").attr("readonly", false);
+                                    $('#dob,#state,#city,#zipcode,#country').removeAttr("style");
+                                    $('#DOB,#State,#City,#Country').hide();
+                                    $('#Fname,#Mname,#Lname,#Nationality,#Ad1,#Ad2,#door,#zipcode').attr("readonly", false);
+                                    return false;
+                                }
+                               function fn1() {
+                                   debugger;
+                                   //document.getElementById('role').style.display = "block";
+                                   //document.getElementById('roleid').style.display = "none";
+                                   //document.getElementById('sp').style.display = "block";
+                                   //document.getElementById('txt').style.display = "none";
+                                   //$('#btne').show();
+                                   //$('#btnd,#btnu,#btnc').hide();
+                                   $('#btne').show();
+                                   $('#btnu,#btnc').hide();
+                                   //$("#").attr("readonly", false);
+                                   $('#dob,#state,#city,#country').css({"display":"none"});
+                                    $('#DOB,#State,#City,#zipcode,#Country').show();
+                                    $('#Fname,#Mname,#Lname,#Nationality,#Ad1,#Ad2,#door,#zipcode').attr("readonly", true);
+                                    return false;
+                                    return false;
+                                }
+
+                                            </script>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="button-items">
+                                    <button type="button" class="btn btn-primary waves-effect waves-light">Update</button>
+                                </div>*@
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      
+<script type="text/javascript">
+    
+    $(function () {
+        debugger;
+       // localStorage.setItem("tab", "home-1");
+        var tabName=localStorage.getItem("tab");
+      
+        $('#Tabs a[href="#' + tabName + '"]').tab('show');
+
+        $("#Tabs a").click(function () {
+            debugger;
+
+         var re = $(this).attr("href").replace("#", "");
+         localStorage.setItem("tab", $(this).attr("href").replace("#", ""))
+           
+         
+        });
+    });
+ </script>
+
+                        @*</div>*@
+                       
+                        @*<asp:HiddenField ID="TabName" />*@
+                        @*@Html.HiddenFor(h=>h.hvalue,new {id="TabName" })*@
+                        <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                            @using (Html.BeginForm("EmailNotification", "Settings", FormMethod.Post, new { role = "form", @id = "Email", @style = "width:100%;" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                // @Html.ValidationSummary("", new { @class = "text-danger" })
+                                <div class="error">
+                                    @if (Request.Form.AllKeys.Contains("Em"))
+                                    {
+                                        @Html.ValidationSummary();
+                                        // @Html.ValidationSummary("", new { @class = "text-danger", @id = "ch" })
+                                    }
+                                </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Email Notification</h3>
+                                        @if (TempData["successEmail"] != null)
+                                        {
+                                            <div class="alert alert-success alert-dismissible fade show col-lg-6" style="margin-top: -42px;margin-left: 465px;" role="alert" id="successEmail">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <strong>Well done!</strong> @TempData["success"]
+                                            </div>
+                                        } 
+                                        <p class="card-text">
+                                            Please consider our available options for increasing the security of your account.
+                                            We want to give you every opportunity to be confident that your account is secure.
+                                        </p>
+                                        <hr />
+                                        
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+
+                                                <div class="custom-control custom-checkbox">
+                                                    @*<input type="checkbox" class="custom-control-input" id="checkbox2">*@
+                                                    @Html.CheckBoxFor(x => x.En.send, new { @class = "custom-control-input", id = "Send" })
+                                                    <label class="custom-control-label" for="Send"> on send coin </label>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr />
+
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+
+                                                <div class="custom-control custom-checkbox">
+                                                    @*<input type="checkbox" class="custom-control-input" id="checkbox3">*@
+                                                    @Html.CheckBoxFor(x => x.En.Receive, new { @class = "custom-control-input", id = "Receive" })
+                                                    <label class="custom-control-label" for="Receive"> on Receive coin</label>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr />
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+
+                                                <div class="custom-control custom-checkbox">
+                                                    @*<input type="checkbox" class="custom-control-input" id="checkbox4">*@
+                                                    @Html.CheckBoxFor(x => x.En.Sell, new { @class = "custom-control-input", id = "Sell" })
+                                                    <label class="custom-control-label" for="Sell"> on Sell coin requist</label>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr />
+
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+
+                                                <div class="custom-control custom-checkbox">
+                                                    @*<input type="checkbox" class="custom-control-input" id="checkbox5">*@
+                                                    @Html.CheckBoxFor(x => x.En.Buy, new { @class = "custom-control-input", id = "Buy" })
+                                                    <label class="custom-control-label" for="Buy"> on Buy coin </label>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr />
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+
+                                                <div class="custom-control custom-checkbox">
+                                                    @Html.CheckBoxFor(x => x.En.Exchange, new { @class = "custom-control-input", id = "Exchange" })
+                                                    <label class="custom-control-label" for="Exchange"> on Exchange coin</label>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="button-items">
+                                      <button type="button" class="btn btn-primary waves-effect waves-light">Update</button>
+                                </div>*@
+                            <div class="col-sm-12 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" name="Em" type="submit">Update</button>
+                            </div>
+
+                        }
+                        </div>
+
+                      
+
+                        @*<div class="tab-pane p-3" id="messages-1" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">General Settings</h3>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="p-20">
+                                                    @*<form action="#">
+                                                      
+                                                        <div class="row" style="margin-left:100px;margin-right:100px">
+                                                            <div class="col-lg-12">
+                                                                <div class="card m-b-30">
+                                                                    <h5 class="card-header mt-0">Change Password</h5>
+                                                                    <div class="card-body">
+                                                                        <div class="form-group">
+                                                                            <label>Current Password</label>
+                                                                            <input type="text" class="form-control" placeholder="Current Password">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label>Email</label>
+                                                                            <input type="text" class="form-control" placeholder="Email">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label>Confirm New Password</label>
+                                                                            <input type="text" class="form-control" placeholder="New Password">
+                                                                        </div>
+                                                                       
+
+                                                                      
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="card m-b-30">
+                                                                    <h5 class="card-header mt-0">Secret Phase Settings</h5>
+                                                                    <div class="card-body">
+                                                                        <div class="form-group">
+                                                                            <label>Secret Phrase</label>
+                                                                            <input type="text" class="form-control" placeholder="Secret Phrase" readonly>
+                                                                        </div>
+                                                        
+                                                                      
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="card m-b-30">
+                                                                    <h5 class="card-header mt-0">Local Currency Settings</h5>
+                                                                    <div class="card-body">
+                                                                        <label>Local Currency</label>
+                                                                        @*<input type="text" placeholder="Country" class="form-control">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>INR</option>
+                                                                            <option>INR1</option>
+                                                                        </select>
+
+                                                                        @*<a href="#" class="btn btn-primary">Go somewhere</a>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="card m-b-30">
+                                                                    <h5 class="card-header mt-0">Auto Logout Settings</h5>
+                                           
+                                                                    <div class="card-body">
+                                                                  @using (Html.BeginForm("SessionTimeout", "Settings", FormMethod.Post, new { role = "form", @id = "Logout", @style = "width:100%;" }))
+                                                                  {
+                                                                    @Html.AntiForgeryToken()
+                                                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                                        <div class="form-group">
+                                                                            <label>Auto Logout</label>
+                                                                            @*<input type="text" placeholder="Country" class="form-control">
+                                                                            @*<select class="form-control">
+                                                                                <option>Select</option>
+                                                                                <option>5 Min</option>
+                                                                                <option>10 Min</option>
+                                                                                <option>15 Min</option>
+                                                                                <option>30 Min</option>
+                                                                            </select>
+                                                                            @Html.DropDownListFor(model => model.lg.LogoutTime, new List<SelectListItem> {
+                                                                            new SelectListItem {Text = "5 Min", Value = "5 Min"},
+                                                                            new SelectListItem {Text = "10 Min", Value = "10 Min" },
+                                                                        new SelectListItem {Text = "15 Min", Value = "15 Min" },
+                                                                        new SelectListItem {Text = "30 Min", Value = "30 Min" }}, "---Select---", new { @class = "form-control" })
+                                                                            @*<a href="#" class="btn btn-primary">Go somewhere</a>
+                                                                            <div>
+                                                                                @ViewBag.res
+                                                                            </div>
+                                                                           
+                                                                            </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-sm-12 text-right">
+                                                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Update</button>
+                                                                            </div>
+                                                                            </div>
+                                                                        }
+                                                                        </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        @*<div class="row">
+                                                               <div class="form-group col-md-5">
+                                                                   <label>Date Of Birth</label>
+                                                                   <input type="text" placeholder="" class="form-control">
+
+                                                               </div>
+                                                               <div class="form-group col-md-5">
+                                                                   <label>Nationality</label>
+                                                                   <input type="text" placeholder="Nationality" class="form-control">
+                                                               </div>
+                                                            </div>
+
+                                                    @*</form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="button-items">
+                                    <button type="button" class="btn btn-primary waves-effect waves-light">Update</button>
+                                </div>
+                            <div class="col-sm-12 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Update</button>
+                            </div>
+                        </div>*@
+                      <div class="tab-pane p-3" id="messages-2" role="tabpanel">
+                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Change Password</h3>
+                                        <hr />
+                                        <p class="text-success">@ViewBag.StatusMessage</p>
+                                        @using (Html.BeginForm("ChangePassword", "Settings", FormMethod.Post, new { @id = "password", @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            
+                                            //@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                            @*@Html.ValidationSummary(false,"", new { @class = "text-danger" })*@
+                                        <div class="error">
+                                            @if (Request.Form.AllKeys.Contains("ch"))
+                                            {
+                                                @Html.ValidationSummary();
+                                                // @Html.ValidationSummary("", new { @class = "text-danger", @id = "ch" })
+                                            }
+                                        </div>
+                                            
+
+                                           <div class="sp">
+                                             
+                                              <div class="form-group">
+                                                    <label>Current Password</label>
+                                                    @*<input type="password" class="form-control"  placeholder="Current Password">*@
+                                                  @Html.EditorFor(model => model.cp.OldPassword, new { htmlAttributes = new { @class = "form-control", type = "password", id = "cpass" } })
+                                                  @Html.ValidationMessageFor(model => model.cp.OldPassword, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>New Password</label>
+                                                    @*<input type="text" class="form-control" placeholder="Email">*@
+                                                    @Html.EditorFor(model => model.cp.NewPassword, new { htmlAttributes = new { @class = "form-control", type = "password", id = "npass" } })
+                                                    @Html.ValidationMessageFor(model => model.cp.NewPassword, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Confirm New Password</label>
+                                                    @*<input type="text" class="form-control" placeholder="New Password">*@
+                                                    @Html.EditorFor(model => model.cp.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", type = "password", id = "cnpass" } })
+                                                    @Html.ValidationMessageFor(model => model.cp.ConfirmPassword, "", new { @class = "text-danger" })
+                                                </div>
+                                            
+                                                <div class="button-items">
+                                                    <button type="submit" name="ch" class="btn btn-primary waves-effect waves-light">Update</button>
+                                                </div>
+                                          </div>
+                                        }
+                                        @*@section Scripts {
+                                            @Scripts.Render("~/bundles/jqueryval")
+                                        }*@
+                                        </div>
+                                  
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Secret Phrase</h3>
+                                                  <hr />
+
+                                        <div class="sp">
+                                             <div class="form-group">
+                                                <label>Secret Phrase</label>
+                                                <input type="text" id="txt" class="form-control" placeholder="Secret Phrase" readonly>
+                                            </div>
+
+                                            <div class="button-items">     
+                                                <button type="submit" id="btnshow" class="btn btn-primary waves-effect waves-light">Show</button>
+                                                @*<button type="button" id="btnadd" disabled class="btn btn-primary waves-effect waves-light">Add</button>*@
+                                            </div>
+                                        </div>
+                                     </div>
+                                </div>
+
+                                <script type = "text/javascript" src ="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                 <script type = "text/javascript"> jQuery(function () {
+                                 
+                                 jQuery('#btnshow').click(function () {
+                                     jQuery.ajax({
+                                type: "GET",
+                                url: "/Settings/GetSecretPhase",
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (response) {
+                                    debugger;
+                                    if (response != null) {
+                                        //alert(response);
+                                    jQuery('#txt').val(response);
+                                    document.getElementById('btnshow').disabled = true;
+                                    //document.getElementById('btnadd').disabled = false;
+                                //$('#EmployeeDesignation').val(response.Designation);
+                                //$('#EmployeeLocation').val(response.Location);
+                                } else {
+                                    //alert("Something went wrong");
+                                    //document.getElementById('myadd').disabled = false;
+                                    //jQuery('#btnadd').disabled = false;
+                                    jQuery('#txt').val("No Data");
+                                    //alert("no data....");
+
+                                }
+                                }
+                                //failure: function(response) {
+                                //alert(response.responseText);
+                                //},
+                                //error: function(response) {
+                                //alert(response.responseText);
+                                //}
+                                });
+                                });
+                                }); </script>
+
+
+                                <div class="col-md-6">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Local Currency</h3>
+
+
+                                        <hr />
+
+                                        <div class="sp">
+                                            <div class="form-group">
+                                                <label>Local Currency</label>
+                                                @*<input type="text" placeholder="Country" class="form-control">*@
+                                                <select class="form-control">
+                                                    <option>Select</option>
+                                                    <option>INR</option>
+                                                    <option>INR1</option>
+                                                </select>
+                                                </div>
+                                                <div class="button-items">
+                                                    <button type="button" class="btn btn-primary waves-effect waves-light">Update</button>
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                               <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Auto Logout Settings</h3>
+
+
+                                        <hr />
+
+                                        <div class="sp">
+
+                                            @using (Html.BeginForm("SessionTimeout", "Settings", FormMethod.Post, new { role = "form", @id = "Logout", @style = "width:100%;" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                <div class="form-group">
+                                                    <label>Auto Logout</label>
+                                                   
+                                                    @Html.DropDownListFor(model => model.lg.LogoutTime, new List<SelectListItem> {
+                                                                            new SelectListItem {Text = "5 Min", Value = "5 Min"},
+                                                                            new SelectListItem {Text = "10 Min", Value = "10 Min" },
+                                                                        new SelectListItem {Text = "15 Min", Value = "15 Min" },
+                                                                        new SelectListItem {Text = "30 Min", Value = "30 Min" }}, "---Select---", new { @class = "form-control" })
+                                                    @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
+                                                    <div>
+                                                        @ViewBag.res
+                                                    </div>
+
+                                                </div>
+                                                <div class="button-items">
+                                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Update</button>
+
+                                                </div>
+                                                                       
+                                             }
+        
+
+                                        </div>
+                                   </div>
+                                </div>
+                            </div>
+
+                          
+                        </div>
+
+
+
+                         
+                           
+                        </div>
+
+                      
+                    </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    @*</div>*@ <!-- end col -->
+@section Scripts {
+    <script>
+        debugger;
+        function GetCity() {
+            var stateId = $('#profile_State').val();
+    $.ajax({
+        url: '/Settings/GetCity',
+        type: "GET",
+        dataType: "JSON",
+        data: { State: stateId},
+        success: function (citylist) {
+            $("#profile_City").html(""); // clear before appending new list
+            $.each(citylist, function (i, city) {
+                $("#profile_City").append(
+                    $('<option></option>').val(city.CityId).html(city.CityName));
+            });
+        }
+    });
+  }
+        
+
+        function GetState() {
+            var countryId = $('#profile_Country').val();
+           
+      $.ajax({
+          url: '/Settings/GetState',
+          type: "GET",
+          dataType: "JSON",
+          data: { Country: countryId },
+          success: function (statelist) {
+              $("#profile_State").html(""); // clear before appending new list
+             
+                  $("#profile_State").append(
+                      $('<option></option>').val("").html("Select"));
+              $.each(statelist, function (i, state) {
+                  $("#profile_State").append(
+                      $('<option></option>').val(state.StateId).html(state.StateName));
+              });
+          }
+      });
+  }
+    </script>
+}
+
+
+
+

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BlockChainModelStoreContainer" CdmEntityContainer="BlockChainEntities">
+    <EntitySetMapping Name="tbl_Coin_Master">
+      <EntityTypeMapping TypeName="BlockChainModel.tbl_Coin_Master">
+        <MappingFragment StoreEntitySet="tbl_Coin_Master">
+          <ScalarProperty Name="MarkupExchange" ColumnName="MarkupExchange" />
+          <ScalarProperty Name="MarkupSell" ColumnName="MarkupSell" />
+          <ScalarProperty Name="MarkupBuy" ColumnName="MarkupBuy" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CoinName" ColumnName="CoinName" />
+          <ScalarProperty Name="CoinAbbreviation" ColumnName="CoinAbbreviation" />
+          <ScalarProperty Name="MinimumSendtAmount" ColumnName="MinimumSendtAmount" />
+          <ScalarProperty Name="MaximumSendAmount" ColumnName="MaximumSendAmount" />
+          <ScalarProperty Name="MinimumReceivetAmount" ColumnName="MinimumReceivetAmount" />
+          <ScalarProperty Name="MaximumReceiveAmount" ColumnName="MaximumReceiveAmount" />
+          <ScalarProperty Name="MinimumExchagetAmount" ColumnName="MinimumExchagetAmount" />
+          <ScalarProperty Name="MaximumExchangeAmount" ColumnName="MaximumExchangeAmount" />
+          <ScalarProperty Name="MinimumSellAmount" ColumnName="MinimumSellAmount" />
+          <ScalarProperty Name="MaximumSellAmount" ColumnName="MaximumSellAmount" />
+          <ScalarProperty Name="SellFee" ColumnName="SellFee" />
+          <ScalarProperty Name="SellTax" ColumnName="SellTax" />
+          <ScalarProperty Name="MinimumBuyAmount" ColumnName="MinimumBuyAmount" />
+          <ScalarProperty Name="MaximumBuyAmount" ColumnName="MaximumBuyAmount" />
+          <ScalarProperty Name="BuyFee" ColumnName="BuyFee" />
+          <ScalarProperty Name="BuyTax" ColumnName="BuyTax" />
+          <ScalarProperty Name="SendTransactionFeeReguler" ColumnName="SendTransactionFeeReguler" />
+          <ScalarProperty Name="SendTransactionFeeNormal" ColumnName="SendTransactionFeeNormal" />
+          <ScalarProperty Name="SendTransactionFeeHigh" ColumnName="SendTransactionFeeHigh" />
+          <ScalarProperty Name="IsSend" ColumnName="IsSend" />
+          <ScalarProperty Name="IsReceive" ColumnName="IsReceive" />
+          <ScalarProperty Name="IsSell" ColumnName="IsSell" />
+          <ScalarProperty Name="IsBuy" ColumnName="IsBuy" />
+          <ScalarProperty Name="IsExchange" ColumnName="IsExchange" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedUserId" ColumnName="CreatedUserId" />
+          <ScalarProperty Name="CreatedDateTime" ColumnName="CreatedDateTime" />
+          <ScalarProperty Name="UpdatedUserId" ColumnName="UpdatedUserId" />
+          <ScalarProperty Name="UpdatedDateTime" ColumnName="UpdatedDateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetActivityLogList" FunctionName="BlockChainModel.Store.GetActivityLogList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BlockChainModel.GetActivityLogList_Result">
+          <ScalarProperty Name="DateandTime" ColumnName="DateandTime" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetCoinsList" FunctionName="BlockChainModel.Store.GetCoinsList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BlockChainModel.GetCoinsList_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="coinname" ColumnName="coinname" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetRecentTransactionList" FunctionName="BlockChainModel.Store.GetRecentTransactionList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BlockChainModel.GetRecentTransactionList_Result">
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="Transaction_Date" ColumnName="Transaction_Date" />
+          <ScalarProperty Name="Transaction_Time" ColumnName="Transaction_Time" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetTotalBalance" FunctionName="BlockChainModel.Store.GetTotalBalance">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BlockChainModel.GetTotalBalance_Result">
+          <ScalarProperty Name="coinname" ColumnName="coinname" />
+          <ScalarProperty Name="Transtype" ColumnName="Transtype" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetTotalTransaction" FunctionName="BlockChainModel.Store.GetTotalTransaction" />
+    <FunctionImportMapping FunctionImportName="GetWalletBalance" FunctionName="BlockChainModel.Store.GetWalletBalance">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="BlockChainModel.GetWalletBalance_Result">
+          <ScalarProperty Name="CoinName" ColumnName="CoinName" />
+          <ScalarProperty Name="TotalBalance" ColumnName="TotalBalance" />
+          <ScalarProperty Name="AvailableBalance" ColumnName="AvailableBalance" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="USER_SESSION">
+      <EntityTypeMapping TypeName="BlockChainModel.USER_SESSION">
+        <MappingFragment StoreEntitySet="USER_SESSION">
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="SessionToken" ColumnName="SessionToken" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

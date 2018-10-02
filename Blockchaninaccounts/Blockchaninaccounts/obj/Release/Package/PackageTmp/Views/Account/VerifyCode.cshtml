@@ -1,0 +1,111 @@
+﻿@model Blockchaninaccounts.Models.VerifyCodeViewModel
+@{
+    ViewBag.Title = "Verify";
+    Layout = "~/Views/Shared/LoginPageLayout.cshtml";
+}
+
+@*<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.Hidden("provider", @Model.Provider)
+    @Html.Hidden("rememberMe", @Model.RememberMe)
+    <h4>Enter verification code</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <div class="checkbox">
+                @Html.CheckBoxFor(m => m.RememberBrowser)
+                @Html.LabelFor(m => m.RememberBrowser)
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Submit" />
+        </div>
+    </div>
+}*@
+
+<div class="wrapper-page">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center m-0">
+                <a href="index.html" class="logo logo-admin"><img src="@Url.Content("~/Content/")assets/images/logo_dark.png" height="30" alt="logo"></a>
+            </h3>
+            <div class="p-3">
+                <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
+                <p class="text-muted text-center">Please verify code to continue to Fonik.</p>
+                <div class="alert alert-warning" role="alert">
+                    <strong>Warning!</strong> Please check your email, the verification code has sended to your registered email.
+                </div>
+                @*<form class="form-horizontal m-t-30" action="http://themesbrand.com/fonik/blue/index.html">*@
+             
+                    @*@if (Convert.ToInt32(TempData["GoogleError"]) == 1)
+                    {
+                        <script>
+                                $(function() {
+                                    jQuery('#confirm').modal('show')
+
+
+                                });
+
+                        </script>
+                    }*@
+                    @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("provider", @Model.Provider)
+                        @Html.Hidden("rememberMe", @Model.RememberMe)
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <h4>Enter verification code</h4>
+                            <label for="username">Code</label>
+                            @*<input type="text" class="form-control" id="username" placeholder="Enter username">*@
+                            @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+                            @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })*@
+                            @*<input type="text" name="passcode" class="form-control" />*@
+
+                            @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                        </div>
+                       
+                        <div class="form-group row m-t-20">
+                            @*<div class="col-sm-6">
+                                    <div class="custom-control custom-checkbox">
+                                        @*<input type="checkbox" class="custom-control-input" id="customControlInline">
+                                        @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
+                                        <label class="custom-control-label" for="customControlInline">Remember me</label>
+                                    </div>
+                                </div>*@
+                            <div class="col-sm-6 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Verify</button>
+                            </div>
+                        </div>
+                        @*<div class="form-group m-t-10 mb-0 row">
+                                <div class="col-12 m-t-20">
+                                    <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                                </div>
+                            </div>*@
+                        @*</form>*@
+                    }
+                
+            </div>
+        </div>
+    </div>
+    <div class="m-t-40 text-center">
+        <p>Don't have an account ? <a href="pages-register.html" class="font-500 font-14 text-primary font-secondary"> Signup Now </a> </p>
+        <p>© 2018 Fonik. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

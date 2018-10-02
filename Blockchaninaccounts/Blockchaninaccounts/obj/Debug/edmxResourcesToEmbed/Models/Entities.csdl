@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BlockChainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tbl_Coin_Master">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CoinName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CoinAbbreviation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MinimumSendtAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumSendAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumReceivetAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumReceiveAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumExchagetAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumExchangeAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumSellAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumSellAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="SellFee" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="SellTax" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MinimumBuyAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MaximumBuyAmount" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="BuyFee" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="BuyTax" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="SendTransactionFeeReguler" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="SendTransactionFeeNormal" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="SendTransactionFeeHigh" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="IsSend" Type="Boolean" />
+    <Property Name="IsReceive" Type="Boolean" />
+    <Property Name="IsSell" Type="Boolean" />
+    <Property Name="IsBuy" Type="Boolean" />
+    <Property Name="IsExchange" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="CreatedUserId" Type="Guid" />
+    <Property Name="CreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedUserId" Type="Guid" />
+    <Property Name="UpdatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="MarkupBuy" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MarkupSell" Type="Decimal" Precision="18" Scale="8" />
+    <Property Name="MarkupExchange" Type="Decimal" Precision="18" Scale="8" />
+  </EntityType>
+  <EntityContainer Name="BlockChainEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tbl_Coin_Master" EntityType="Self.tbl_Coin_Master" />
+    <FunctionImport Name="GetActivityLogList" ReturnType="Collection(BlockChainModel.GetActivityLogList_Result)">
+      <Parameter Name="userid" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetCoinsList" ReturnType="Collection(BlockChainModel.GetCoinsList_Result)" />
+    <FunctionImport Name="GetRecentTransactionList" ReturnType="Collection(BlockChainModel.GetRecentTransactionList_Result)">
+      <Parameter Name="userid" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetTotalBalance" ReturnType="Collection(BlockChainModel.GetTotalBalance_Result)">
+      <Parameter Name="userid" Mode="In" Type="String" />
+      <Parameter Name="coinid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetTotalTransaction" ReturnType="Collection(Decimal)">
+      <Parameter Name="userid" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetWalletBalance" ReturnType="Collection(BlockChainModel.GetWalletBalance_Result)">
+      <Parameter Name="userid" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="USER_SESSION" EntityType="BlockChainModel.USER_SESSION" />
+  </EntityContainer>
+  <ComplexType Name="GetActivityLogList_Result">
+    <Property Type="DateTime" Name="DateandTime" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Activity" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="GetCoinsList_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="coinname" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="GetRecentTransactionList_Result">
+    <Property Type="Decimal" Name="TransactionId" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="String" Name="Transaction_Date" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Transaction_Time" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="8" />
+    <Property Type="Decimal" Name="Amount" Nullable="true" Precision="18" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="GetTotalBalance_Result">
+    <Property Type="String" Name="coinname" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="Transtype" Nullable="false" MaxLength="8" />
+    <Property Type="Decimal" Name="balance" Nullable="false" Precision="38" Scale="0" />
+  </ComplexType>
+  <ComplexType Name="GetWalletBalance_Result">
+    <Property Type="String" Name="CoinName" Nullable="true" MaxLength="100" />
+    <Property Type="Decimal" Name="TotalBalance" Nullable="true" Precision="38" Scale="0" />
+    <Property Type="Decimal" Name="AvailableBalance" Nullable="true" Precision="38" Scale="0" />
+  </ComplexType>
+  <EntityType Name="USER_SESSION">
+    <Key>
+      <PropertyRef Name="SessionToken" />
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="SessionToken" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+  </EntityType>
+</Schema>

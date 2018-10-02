@@ -1,0 +1,272 @@
+﻿@model Blockchaninaccounts.Models.ExchangeViewMode
+@{
+    ViewBag.Title = "Exchange";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function getop() {
+        debugger;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var e1 = document.getElementById("RCurrency");
+        var RCoinName = e1.options[e1.selectedIndex].text;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var Value = parseInt(a);
+        var CoinId = parseInt($('#Currency').val());
+        var RCoinId = parseInt($('#RCurrency').val());
+        if (CoinName == "Select") {
+            jQuery('#Amount2').val("Please select Exchange Coin first..");
+            return false;
+        }
+        if (RCoinName == "Select")
+        {
+            jQuery('#Amount2').val("Please select receive Coin first..");
+            return false;
+        }
+       
+        $.ajax({
+
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/GetCoinValue',
+            data: { coinid: CoinId, value: a, name: "Exchange", Recoinid: RCoinId, coinname: CoinName, name: "Exchange" },
+            success: function (result) {
+                if (result == "NA") {
+                    jQuery('#Amount2').val("NA");
+
+                }
+                else if (result.error == "NOBAL")
+                {
+                    disable();
+                    jQuery('#Amount2').val(parseFloat(result.ReceiveAmt).toFixed(2));
+                    $("#cname").html(""); // clear before appending new list
+                    $("#cname").append(CoinName);
+                    $("#Coinprice").html(""); // clear before appending new list
+                    $("#Coinprice").append("<label style='color:red'>" + " $ " + parseFloat(result.Baldiff).toFixed(2) + " required to exchange in your " + CoinName + " wallet" + "</label>");
+                    
+
+                }//<label style="color:red">0.00021762 BTC required to exchange.</label>
+                else {
+                    //<span class="font-13 text-muted">At Rs:</span> <label> 544249</label><span class="font-13 text-muted"> per BTC</span>
+                    Enable();
+                    jQuery('#Amount2').val(parseFloat(result.ReceiveAmt).toFixed(2));
+                    $("#Coinprice").html(""); // clear before appending new list
+                    $("#RCoinprice").html(""); // clear before appending new list
+                    $("#Coinprice").append("<span class='font-13 text-muted'>" + "At $ " + '</span>' + "<label>" + parseFloat(result.markupvalue).toFixed(2) + "</label>" + "<span class='font-13 text-muted'> per " + CoinName + "</span>");
+                    $("#RCoinprice").append("<span class='font-13 text-muted'>" + "At $ " + '</span>' + "<label>" + parseFloat(result.Rmarkupvalue).toFixed(2) + "</label>" + "<span class='font-13 text-muted'> per " + RCoinName + "</span>");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+    }
+    function disable() {
+        debugger;
+        // $('#' + "Send").find(':input').attr('disabled', 'disabled');
+        $("#btn").attr('disabled', true);
+        //document.getElementById('dsu').style.display = 'block';
+        $("#dsu").css("display", "block");
+
+    }
+    function Enable() {
+        $("#btn").attr('disabled', false);
+        $("#dsu").css("display", "none");
+    }
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-20">
+            <div class="card-body">
+                <h3 class="mt-0 header-title"><i class="dripicons-forward"></i>Exchange</h3>
+                <hr />
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="row s">
+                    <div class="col-sm-12">
+                        <div class="alert alert-success bg-success text-white alert-dismissible fade show" role="alert" style="display:none" id="dsu">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <strong>Sorry!</strong> You don't have enough Coins in your wallet to exchange for <strong id="cname"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row s">
+                    <div class="col-sm-6">
+                        <label for="example-search-input" class="col-form-label">Exchange:</label>
+                        @*<select class="form-control ">
+                            <option>--Select coin--</option>
+                            <option> Bitcoin</option>
+                            <option style="background: url(pip.gif) right no-repeat; width: 1px">Ethereum</option>
+                            <option>Ripple</option>
+                            <option>Micro Bitcoin</option>
+                        </select>*@
+                        @Html.DropDownListFor(M => M.ExchangeCoinId, new SelectList(ViewBag.Coinlist, "CoinId", "CoinName"), "Select", new { @class = "form-control", id = "Currency" })
+                        @Html.ValidationMessageFor(model => model.ExchangeCoinId, "", new { @class = "text-danger" })
+                        <span id="Massage"></span>
+                    </div>
+                    <i class="ti-arrows-horizontal" style="margin-top:48px;margin-left: -8px;"></i>
+                    <div class="col-sm-6" style="margin-left: -7px;">
+                        <label for="example-search-input" class="col-form-label">Receive:</label>
+                        @*<select class="form-control">
+                            <option>--Select coin--</option>
+                            <option> Bitcoin</option>
+                            <option style="background: url(pip.gif) right no-repeat; width: 1px">Ethereum</option>
+                            <option>Ripple</option>
+                            <option>Micro Bitcoin</option>
+                        </select>*@
+                        @Html.DropDownListFor(M => M.ReceiveCoinId, new SelectList(ViewBag.Coinlist, "CoinId", "CoinName"), "Select", new { @class = "form-control", id = "RCurrency" })
+                        @Html.ValidationMessageFor(model => model.ReceiveCoinId, "", new { @class = "text-danger" })
+                        <span id="RMassage"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row s">
+                   
+                    <div class="col-sm-6">
+                        <label>Amount:</label>
+                        <div class="input-group bootstrap-touchspin">
+                            @*<input id="demo2" type="text" value="0" name="demo2" class="form-control" style="display: block;">*@
+                            @Html.EditorFor(model => model.AmtInEx, new { htmlAttributes = new { @class = "form-control", @onkeyup = "return getop();", id = "Amount1", placeholder = "Enter no. of coin to be exchange." } })
+                          @*<span class="input-group-addon bootstrap-touchspin-postfix"><label>BTC</label></span><br />*@
+                           
+                         </div>
+                        @Html.ValidationMessageFor(model => model.AmtInEx, "", new { @class = "text-danger" })
+                        <div id="Coinprice"></div>
+                        @*<label style="color:red">0.00021762 BTC required to exchange.</label><a href="@Url.Action("BuyBitcoin", "BuyBitcoin")">Buy Bitcoin</a>*@
+                                                                         
+                                                                     
+                    </div>
+                  
+                    <i class="dripicons-arrow-thin-right" style="margin-top:38px;margin-left: -8px;"></i>
+                   <div class="col-sm-6" style="margin-top: 29px;margin-left: -6px;">
+                       <div class="input-group bootstrap-touchspin">
+                            @*<input id="demo2" type="text" value="0" name="demo2" class="form-control" style="display: block;">*@
+                           @Html.EditorFor(model => model.AmtInRe, new { htmlAttributes = new { @class = "form-control", id = "Amount2",@readOnly="readonly"} })
+                          @*<span class="input-group-addon bootstrap-touchspin-postfix">ETH</span><br />*@
+                          
+                        </div>
+                       @Html.ValidationMessageFor(model => model.AmtInRe, "", new { @class = "text-danger" })
+                       <div id="RCoinprice"></div>
+                        @*<div class="input-group bootstrap-touchspin">
+                            <span class="input-group-addon bootstrap-touchspin-prefix">&#x20B9</span>
+                            <input id="demo2" type="text" value="0" name="demo2" class="form-control" style="display: block;">
+                        </div>*@
+                    </div>
+                </div>
+
+                <div class="form-group row s">
+                    <div class="col-sm-12">
+                        <div class="button-items" style="float:right">
+                            <button type="submit" id="btn" class="btn btn-primary btn-lg waves-effect waves-light">Continue</button>
+                        </div>
+                        @*<span class="font-13 text-muted">(Afert Onclick you should show Success And Failure Alert.)</span>*@
+                    </div>
+                </div>
+            }
+        </div>
+    </div> <!-- end col -->
+</div>
+ </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $('#Currency').change(function () {
+
+        debugger;
+        var RCoinId =$('#RCurrency').val();
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var CoinId = $('#Currency').val();
+        if (CoinName == "Select") {
+            $("#Massage").html("");
+            jQuery('#Amount2').val("");
+            jQuery('#Amount1').val("");
+            return false;
+        }
+       
+        if (CoinId == RCoinId) {
+           
+            jQuery('#Amount2').val("");
+            jQuery('#Amount1').val("");
+            $("#Coinprice").html("");
+            $("#Massage").html(""); // clear before appending new list
+            $("#Massage").append("<label  style='color:red'>" + "For Exchange, coin should be different." + "</label>");
+            // jQuery('#Amount2').val("Please select Coins first..");
+            return false;
+        }
+        else { $("#RMassage").html(""); }
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/CheckCoin',
+            data: { coinid: CoinId },
+            success: function (result) {
+                if (result == "NA") {
+                    $("#Massage").html(""); // clear before appending new list
+                    $("#Massage").append("<label  style='color:red'>" + CoinName + " price is not available"+"</label>");
+                }
+                else { $("#Massage").html(""); }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+        if (a != "") { getop(); return false; }
+    
+    });
+
+    $('#RCurrency').change(function () {
+
+        debugger;
+        var RCoinId = $('#RCurrency').val();
+        var e1 = document.getElementById("RCurrency");
+        var RCoinName = e1.options[e1.selectedIndex].text;
+        var a1 = document.getElementById('Amount1');
+        var a = a1.value;
+        var e = document.getElementById("Currency");
+        var CoinName = e.options[e.selectedIndex].text;
+        var CoinId = $('#Currency').val();
+        if (RCoinName == "Select") {
+            $("#RMassage").html("");
+            jQuery('#Amount2').val("");
+            jQuery('#Amount1').val("");
+            //$("#Coinprice").html("");
+            return false;
+        }
+        if (CoinId == RCoinId) {
+            $("#RMassage").html(""); // clear before appending new list
+            jQuery('#Amount2').val("");
+            jQuery('#Amount1').val("");
+            $("#Coinprice").html("");
+            $("#RMassage").append("<label  style='color:red'>" + "For Exchange, coin should be different.");
+           
+        }
+        else { $("#RMassage").html(""); }
+       
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/CoinsMarketValue/CheckCoin',
+            data: { coinid: RCoinId },
+            success: function (result) {
+                if (result == "NA") {
+                    $("#RMassage").html(""); // clear before appending new list
+                    $("#RMassage").append("<label  style='color:red'>" + RCoinName + " price is not available" + "</label>");
+                }
+                else { $("#Massage").html(""); }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+        if (a != "") { getop(); return false; }
+    });
+</script>

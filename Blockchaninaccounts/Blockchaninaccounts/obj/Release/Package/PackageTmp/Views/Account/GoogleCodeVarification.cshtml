@@ -1,0 +1,97 @@
+﻿
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/LoginPageLayout.cshtml";
+}
+<script>
+    $(function() {
+        
+        
+       
+    });
+
+</script>
+
+<div class="modal fade bs-example-modal-sm" id="confirm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="mySmallModalLabel">Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" id="massage">
+                <strong>Sorry!</strong> Please Enter Valid Code...
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="wrapper-page">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center m-0">
+                <a href="index.html" class="logo logo-admin"><img src="@Url.Content("~/Content/")assets/images/logo_dark.png" height="30" alt="logo"></a>
+            </h3>
+            <div class="p-3">
+                <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
+                <p class="text-muted text-center">Please verify code to continue to Fonik.</p>
+                @*<form class="form-horizontal m-t-30" action="http://themesbrand.com/fonik/blue/index.html">*@
+                <section id="loginForm">
+                    @if (Convert.ToInt32(TempData["GoogleError"]) == 1)
+                    {
+                        <script>
+                                $(function() {
+                                    jQuery('#confirm').modal('show')
+
+
+                                });
+
+                        </script>
+                    }
+                    @using (Html.BeginForm("Verify2faGoogle", "SecurityCenter", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <div class="form-group">
+                            <label for="username">Code</label>
+                            @*<input type="text" class="form-control" id="username" placeholder="Enter username">*@
+                            @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })*@
+                            <input type="text" name="passcode"  class="form-control"/>
+                            
+                            @*@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })*@
+                        </div>
+                        @*<div class="form-group">
+                            <label for="userpassword">Password</label>
+                            @*<input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>*@
+                        <div class="form-group row m-t-20">
+                            @*<div class="col-sm-6">
+                                <div class="custom-control custom-checkbox">
+                                    @*<input type="checkbox" class="custom-control-input" id="customControlInline">
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
+                                    <label class="custom-control-label" for="customControlInline">Remember me</label>
+                                </div>
+                            </div>*@
+                            <div class="col-sm-6 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Verify</button>
+                            </div>
+                        </div>
+                        @*<div class="form-group m-t-10 mb-0 row">
+                            <div class="col-12 m-t-20">
+                                <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                            </div>
+                        </div>*@
+                        @*</form>*@
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="m-t-40 text-center">
+        <p>Don't have an account ? <a href="pages-register.html" class="font-500 font-14 text-primary font-secondary"> Signup Now </a> </p>
+        <p>© 2018 Fonik. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+    </div>
+</div>
+
+

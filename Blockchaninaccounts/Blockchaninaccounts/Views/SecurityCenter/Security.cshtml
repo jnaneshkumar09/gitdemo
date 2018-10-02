@@ -1,0 +1,626 @@
+﻿@model Blockchaninaccounts.Models.SecurityViewModel
+@{
+    ViewBag.Title = "Security";
+    Layout = "~/Views/Shared/Dashboard_LayoutPage.cshtml";
+}
+
+<style>
+    input[type="radio"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #2081d6;
+        transition: 0.2s all linear;
+        outline: none;
+        margin-right: 5px;
+        position: relative;
+        top: 4px;
+    }
+
+        input[type="radio"]:checked {
+            border: 6px solid #2081d6;
+        }
+
+    .radiolabel {
+        margin-right: 15px;
+        line-height: 32px;
+    }
+
+    .sp {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+</style>
+@if (TempData["GoogleError"] != null)
+{
+    <div class="modal fade bs-example-modal-sm" id="confirm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="mySmallModalLabel">Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body" id="massage">
+                    @TempData["GoogleError"]
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+}
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  
+    $(function () {
+        debugger;
+       // localStorage.setItem("tab", "home-1");
+        var tabName=localStorage.getItem("tab");
+
+        $('#Tabs a[href="#' + tabName + '"]').tab('show');
+
+        $("#Tabs a").click(function () {
+            debugger;
+
+         var re = $(this).attr("href").replace("#", "");
+         localStorage.setItem("tab", $(this).attr("href").replace("#", ""))
+
+
+        });
+    });
+</script>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script>
+    $(function () {
+       setTimeout(function () { $("#success").fadeOut(1500); }, 5000)
+       // setTimeout(function () { $("#error").fadeOut(1500); }, 5000)
+    });
+</script>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-20">
+            <div class="card-body">
+                <h3 class="mt-0 header-title"><i class="dripicons-return"></i> Security Center</h3>
+
+                <div class="card-body" id="Tabs" style="border-radius: 5px;background-color: #eee;">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-pills nav-justified" role="tablist" style="width: 50%;">
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link active show" data-toggle="tab" href="#home-1" role="tab" aria-selected="true">Security</a>
+                        </li>
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-toggle="tab" href="#profile-1" role="tab" aria-selected="false">Session</a>
+                        </li>
+
+                    </ul>
+                    <hr />
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane p-3 active show" id="home-1" role="tabpanel">
+                            @*<div id="pa">*@
+
+                                @*@Html.Partial("At")*@
+                                @*@if(0==1){@Html.Partial("At") }*@
+                            @*</div>*@
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Email Authentication</h3>
+                                        <hr />
+                                        <p class="card-text">
+                                            You can Enable or Disable your Email Authentication
+                                        </p>
+                                        <div class="button-items">
+                                            @if (Model.s.TwoFactor == true)
+                                            {
+                                                using (Html.BeginForm("DisableEmail", "SecurityCenter", FormMethod.Post))
+                                                {
+                                                <button type="submit" @*onclick="return jQuery('#modal-3').modal('show')"*@ class="btn btn-secondary waves-effect">Disable</button>
+                                                @*<a href="@Url.Action("ChangeGoogleStatus", "SecurityCenter", new { status = "Disable" })" class="btn btn-primary">Disable</a>*@
+                                                }
+                                            }
+                                            else
+                                            {
+                                                using (Html.BeginForm("EnableEmail", "SecurityCenter", FormMethod.Post))
+                                                {
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light">Enable</button>@*pass 1 enable*@
+                                                }
+                                            }
+                                         </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Google Authentication</h3>
+                                        <hr />
+                                        <p class="card-text">
+                                            You can Enable or Disable your Google Authentication
+                                        </p>
+                                        <div class="button-items">
+                                            @if (Model.s.GoogleStatus == true)
+                                            {
+                                                using (Html.BeginForm("DisableGoogle", "SecurityCenter", FormMethod.Post))
+                                                {
+                                             // @*<a href="@Url.Action("ChangeGoogleStatus", "SecurityCenter", new { status = "Disable" })" onclick="return jQuery('#modal-4').modal('show')" class="btn btn-primary">Disable</a>*@
+                                                <button type="submit" @*onclick="return jQuery('#modal-4').modal('show')"*@ class="btn btn-secondary waves-effect waves-light">Disable</button>
+                                                 }
+                                             }
+                                            else
+                                            {
+                                                <button type="button" name="status" value="Enable" onclick="return jQuery('#modal-2').modal('show')" class="btn btn-primary waves-effect waves-light">Enable</button>@*pass disable 0*@
+                                            }
+                                            @*<button type="button" name="status" value="Enable"  onclick= "return jQuery('#modal-2').modal('show')" class="btn btn-primary waves-effect waves-light">Enable</button>*@  @*pass disable 0*@
+                                            @*<button type="button"  name="status" value="Disable" class="btn btn-secondary waves-effect">Disable</button>*@
+                                            @*<a href="@Url.Action("ChangeGoogleStatus", "SecurityCenter", new { status = "Disable" })" class="btn btn-primary">Disable</a>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane p-3" id="profile-1" role="tabpanel">
+                           @using (Html.BeginForm("PostSession", "SecurityCenter", FormMethod.Post, new { value = "", role = "form", @id = "Session", @style = "width:100%;" }))
+                           {
+                            @Html.AntiForgeryToken()
+                           
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card m-b-30 card-body">
+                                        <h3 class="card-title font-20 mt-0">Session</h3>
+                                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                                       @if (TempData["success"] !=null )
+                                       {
+                                            <div class="alert alert-success alert-dismissible fade show col-lg-6" style="margin-top: -42px;margin-left: 465px;" role="alert" id="success">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <strong>Well done!</strong>@TempData["success"]
+                                            </div>
+                                       }    
+                                        @*<div>
+
+                                            @Html.Raw(TempData["msg"])
+                                        </div>*@
+                                        <hr />
+
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+                                                @*<input type="radio" id="rd"
+                                                       name="Email" value="email" onclick="test(this)">
+                                                <label for="rd1" class="radiolabel">Send Email on Login</label>*@
+                                                <div class="custom-control custom-checkbox">
+                                                    @*<input type="checkbox" class="custom-control-input" id="checkbox1">*@
+                                                    @Html.CheckBoxFor(x => x.Sm.SendEmailOnLogin, new { @class = "custom-control-input", id = "Send" })
+                                                    <label class="custom-control-label" for="Send">Send Email on Login</label>
+                                                </div>
+                                            </div>
+                                            <p class="card-text">
+                                                Receive an email each time someone logs into your account.
+                                                The email will contain information about the IP of the authenticated user and a link to freeze your account if you suspect malicious activity.
+                                            </p>
+                                        </div>
+                                        <hr />
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+                                                @*<input type="radio" id="rd"
+                                                       name="IP" value="IP">
+                                                <label for="rd2" class="radiolabel">Detect IP Address Change</label>*@
+                                                <div class="custom-control custom-checkbox">
+                                                    @Html.CheckBoxFor(x => x.Sm.DetectIP, new { @class = "custom-control-input", id = "checkbox2" })
+                                                    <label class="custom-control-label" for="checkbox2">Detect IP Address Change</label>
+
+                                                </div>
+                                            </div>
+                                            <p class="card-text">
+                                                If the IP address used to access your account changes on any request,
+                                                all of your sessions will be immediately invalidated and you will be logged out. <br />
+                                                This prevents session hijacking.
+                                            </p>
+
+                                        </div>
+                                        <hr />
+
+                                        <div class="sp">
+                                            <div class="form-group m-b-0">
+                                                @*<input type="radio" id="rd"
+                                                       name="IP1" value="email">
+                                                <label for="rd3" class="radiolabel">IP Address Whitelist</label>*@
+                                                <div class="custom-control custom-checkbox">
+                                                    @Html.CheckBoxFor(x => x.Sm.IPAdressWhiteList, new { @class = "custom-control-input", id = "checkbox3" })
+                                                    <label class="custom-control-label" for="checkbox3">IP Address Whitelist</label>
+                                                    
+                                                </div>
+                                            </div>
+                                            <p class="card-text">
+                                                Limit account access by IP address.
+                                                You can provide one or more IP addresses and/or specify an IP range
+                                            </p>
+                                            @if (ViewBag.IpWhiteList == true)
+                                            {
+                                           
+                                                        @*<input type="button" class="btn btn-primary w-md waves-effect waves-light" value="Add" onclick="AddTextBox();" />*@
+                                                        <button class="btn btn-primary w-md waves-effect waves-light" onclick="AddTextBox();" type="button">Add</button>
+                                                        <br />
+                                                        <br />
+                                                        <div id="TextBoxContainer"></div>
+                                                        <br />
+                                                        @*<input type="submit" class="btn btn-primary w-md waves-effect waves-light" value="Submit" />*@
+                                                        <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Submit</button>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 text-right">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Update</button>
+                            </div>
+
+                            }
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+<div class="modal fade" id="modal-2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Google Authenticator</h4>
+            </div>
+
+            <div class="modal-body">
+
+                @*<div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Login Password</label>
+
+                                <input type="text" class="form-control" id="field-1" placeholder="">
+                            </div>
+
+                        </div>
+
+                    </div>*@
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <div class="form-group">
+                            <label for="field-4" class="control-label">QR Code</label>
+
+                        </div>
+
+                        <div class="form-group">
+                            <img src="@ViewBag.BarcodeImageUrl" alt="Mountain View">
+
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="row">
+                        <div class="col-md-8">
+
+                            <div class="form-group">
+                                <label for="field-4" class="control-label">Authentication Code</label>
+
+                                <input type="text" class="form-control" id="field-4" placeholder="1332">
+                            </div>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+
+                        </div>
+
+                    </div>*@
+                @using (Html.BeginForm("EnableGoogle", "SecurityCenter", FormMethod.Post))
+                {
+                    <input type="text" name="passcode" />
+                    @*<input type="submit" class="btn btn-primary"  />*@
+                    @*<a href="@Url.Action("EnableGoogle", "SecurityCenter", new { status = "Enable" })" class="btn btn-primary">Submit</a>*@
+                    <input type="submit" class="btn btn-primary" />
+                }
+
+                @*<div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+<div class="modal fade" id="modal-3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Notification</h4>
+            </div>
+
+            <div class="modal-body">
+
+                @*<div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Login Password</label>
+
+                                <input type="text" class="form-control" id="field-1" placeholder="">
+                            </div>
+
+                        </div>
+
+                    </div>*@
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <div class="form-group">
+                            <label for="field-4" class="control-label">Read this:</label>
+
+                        </div>
+                        <p>If you diasable two-factor<h3 style="color:red">Email authentication</h3>  then you must need to enable Google authentication.
+                        Are you sure to disable email authentication.</p>
+                        @*<div class="form-group">
+                            <img src="@ViewBag.BarcodeImageUrl" alt="Mountain View">
+
+                        </div>*@
+                    </div>
+                </div>
+
+
+
+                    @*<input type="text" name="passcode" />*@
+                    @*<input type="submit" class="btn btn-primary"  />*@
+                    @*<a href="@Url.Action("EnableGoogle", "SecurityCenter", new { status = "Enable" })" class="btn btn-primary">Submit</a>*@
+                    <input type="submit" value="Ok" onclick="return fn()" class="btn btn-primary" />
+
+
+                @*<div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function fn() { debugger; jQuery('#modal-3').modal('hide'); jQuery('#modal-2').modal('show'); return false;}
+</script>
+
+<div class="modal fade" id="modal-4">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Notification</h4>
+            </div>
+
+            <div class="modal-body">
+
+                @*<div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Login Password</label>
+
+                                <input type="text" class="form-control" id="field-1" placeholder="">
+                            </div>
+
+                        </div>
+
+                    </div>*@
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <div class="form-group">
+                            <label for="field-4" class="control-label">Read this:</label>
+
+                        </div>
+                        <p>
+                            If you diasable two-factor <h3 style="color:red">Google authentication</h3> , then you must need to enable Email authentication.
+                            Are you sure to disable Google authentication.
+                        </p>
+                        @*<div class="form-group">
+                                <img src="@ViewBag.BarcodeImageUrl" alt="Mountain View">
+
+                            </div>*@
+                    </div>
+                </div>
+                    @using (Html.BeginForm("EnableEmail", "SecurityCenter", FormMethod.Post))
+                    {
+                        <input type="submit" class="btn btn-primary" value="Ok" name="Ok" />
+                    }
+
+                @*<input type="text" name="passcode" />*@
+                @*<input type="submit" class="btn btn-primary"  />*@
+                @*<a href="@Url.Action("EnableEmail","SecurityCenter")" class="btn btn-primary">ok</a>*@
+                @*<input type="submit" value="Ok" onclick="return jQuery('#modal-2').modal('show')" class="btn btn-primary" />*@
+
+
+                @*<div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        $(function () {
+
+            var x = $(".checkbox");
+            $(x).each(function () {
+                try {
+                    var hiddenField = $(this).find("input[type='hidden']");
+                    $(this).append(hiddenField);
+                    $(this).remove(hiddenField);
+                }
+                catch (e) {
+
+                }
+            })
+        });
+    </script>
+
+
+    @*<script src="https://code.jquery.com/jquery-1.10.2.js"></script>*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    @*<script type="text/javascript">
+            debugger;
+                function fn(){
+                    jQuery("#btn").click(function ()
+                    {
+                        @*$(this).load('@Url.Action("Details")');
+                        jQuery('#pa').load('@Url.Action("Details", "SecurityCenter")');
+                    });
+                }
+
+
+        </script>*@
+    <script type="text/javascript">
+    debugger;
+        jQuery(document).ready(function(){
+
+
+                @*$(this).load('@Url.Action("Details")');*@
+                jQuery('#pa').load('@Url.Action("Details", "SecurityCenter")');
+
+        });
+
+
+    </script>
+    <script type="text/javascript">
+    debugger;
+        jQuery(document).ready(function(){
+            jQuery("#btn").click(function ()
+            {
+                @*$(this).load('@Url.Action("Details")');*@
+                jQuery('#pa').load('@Url.Action("Details", "SecurityCenter")');
+            });
+        });
+
+
+    </script>
+    <script type="text/javascript">
+    debugger;
+        jQuery(document).ready(function(){
+            jQuery("#btn1").click(function ()
+            {
+                @*$(this).load('@Url.Action("Details")');*@
+                jQuery('#pa').load(" #div > *");
+            });
+        });
+
+
+    </script>
+
+<script>
+    $('#checkbox3').change(function () {
+        if (this.checked) {
+            $('#checkbox2').removeAttr('checked');
+        }
+    });
+    $('#checkbox2').change(function () {
+        if (this.checked) {
+            $('#checkbox3').removeAttr('checked');
+        }
+    });
+</script>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+    @*<script type="text/javascript">
+
+            function fn ()
+            {
+
+                    jQuery("#btn").click(function ()
+                    {
+
+                        @*$(this).load('@Url.Action("Details")');
+                        jQuery('#pa').load('@Url.Action("Details", "SecurityCenter")');
+                    });
+                }
+
+
+        </script>*@
+    <script>jQuery.noConflict();</script>
+<script src="~/Content/assets/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+        function GetDynamicTextBox(value) {
+            var div = $("<div />").attr("class", "input-group bootstrap-touchspin col-sm-8");
+
+            var textBox = $("<input />").attr("type", "textbox").attr("name", "DynamicTextBox").attr("class", "form-control").attr("placeholder", "").attr("data-mask", "999.999.9");
+            textBox.val(value);
+            div.append(textBox);
+            var br=$("<br/>");
+
+            div.append(br);
+
+            var span = $("<span/>").attr("class", "input-group-btn");
+
+
+            var button = $("<input />").attr("type", "button").attr("value", "Remove").attr("class", "btn btn-secondary w-md waves-effect waves-light");
+            button.attr("onclick", "RemoveTextBox(this)");
+
+            span.append(button);
+
+            div.append(span);
+
+            return div;
+        }
+        function AddTextBox() {
+            var div = GetDynamicTextBox("");
+            $("#TextBoxContainer").append(div);
+        }
+
+        function RemoveTextBox(button) {
+            debugger;
+           // $(button).parent().remove();
+            $(button).parent().offsetParent().remove();
+        }
+
+        $(function () {
+            var values = eval('@Html.Raw(ViewBag.Values)');
+            if (values != null) {
+                $("#TextBoxContainer").html("");
+                $(values).each(function () {
+                    $("#TextBoxContainer").append(GetDynamicTextBox(this));
+                });
+            }
+        });
+</script>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            $(function () {
+                alert("@ViewBag.Message")
+            });
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from themesbrand.com/fonik/blue/pages-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 May 2018 12:49:53 GMT -->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>NOOR</title>
+    <meta content="Admin Dashboard" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App Icons -->
+    <link rel="shortcut icon" href="@Url.Content("~/Content/")assets/images/favicon.ico">
+    <!-- App css -->
+    <link href="@Url.Content("~/Content/")assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/")assets/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/")assets/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="preloader"><div id="status"><div class="spinner"></div></div></div>
+    <!-- Begin page -->
+    <div class="accountbg"></div>
+   
+
+            @RenderBody()
+
+       
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <!-- jQuery  -->
+    <script src="@Url.Content("~/Content/")assets/js/jquery.min.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/popper.min.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/bootstrap.min.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/modernizr.min.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/waves.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/jquery.slimscroll.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/jquery.nicescroll.js"></script>
+    <script src="@Url.Content("~/Content/")assets/js/jquery.scrollTo.min.js"></script>
+    <!-- App js -->
+    <script src="@Url.Content("~/Content/")assets/js/app.js"></script>
+
+    <!-- Sweet-Alert  -->
+    <script src="@Url.Content("~/Content/")assets/plugins/sweet-alert2/sweetalert2.min.js"></script>
+    <script src="@Url.Content("~/Content/")assets/pages/sweet-alert.init.js"></script>
+
+</body>
+<!-- Mirrored from themesbrand.com/fonik/blue/pages-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 22 May 2018 12:49:53 GMT -->
+</html>
