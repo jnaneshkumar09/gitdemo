@@ -322,7 +322,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\BittrexApi.dll" />
-    <Content Include="BittrexApi.dll" />
+    <Content Include="BittrexApi.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\assets\css\bootstrap.min.css" />
     <Content Include="Content\assets\css\costom.css" />
     <Content Include="Content\assets\css\icons.css" />
